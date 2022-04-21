@@ -22,6 +22,7 @@ COPY --from=builder /usr/src/app/wizard/build /usr/local/wizard
 COPY supervisord.conf /etc/supervisord.conf
 COPY nginx.conf /etc/nginx/
 COPY entrypoint.sh /
+COPY config.yml /
 RUN chmod +x /entrypoint.sh
 
 WORKDIR /

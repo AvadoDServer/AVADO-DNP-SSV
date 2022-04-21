@@ -10,7 +10,10 @@
     "volumes": [
       "data:/data"
     ],
-    "ports": [],
+    "ports": [
+      "13000:13000",
+      "12000/udp"
+    ],
     "environment": [
       "EXTRA_OPTS=",
       "MY_DOCKER_ENV_VAR="

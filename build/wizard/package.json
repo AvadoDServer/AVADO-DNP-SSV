@@ -16,6 +16,7 @@
     "react-confirm-alert": "^2.6.1",
     "react-copy-to-clipboard": "^5.0.4",
     "react-dom": "^16.9.0",
+    "react-drop-zone": "^4.3.2",
     "react-hook-form": "^7.30.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "3.1.0",
