@@ -1,0 +1,23 @@
+{
+  "name": "ssv.avado.dappnode.eth",
+  "version": "0.0.1",
+  "description": "Run an SSV node on your AVADO",
+  "autoupdate": true,
+  "type": "service",
+  "avatar": "/ipfs/QmYRmFCtdXvqq3drc6kBXxeWiiMatTfKVpVrmLX883cQbR",
+  "author": "sponnet",
+  "image": {
+    "volumes": [
+      "data:/data"
+    ],
+    "ports": [],
+    "environment": [
+      "EXTRA_OPTS=",
+      "MY_DOCKER_ENV_VAR="
+    ]
+  },
+  "links": {
+    "homepage": "https://your-project-homepage-or-docs.io"
+  },
+  "license": "GLP-3.0"
+}

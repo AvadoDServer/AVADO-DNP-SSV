@@ -1,0 +1,10 @@
+version: '3.4'
+services:
+  ssv.avado.dappnode.eth:
+    build: ./build
+    image: 'ssv.avado.dappnode.eth:0.0.1'
+    restart: always
+    volumes:
+      - 'data:/data'
+volumes:
+  data: {}
