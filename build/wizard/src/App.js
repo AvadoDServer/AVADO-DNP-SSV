@@ -2,20 +2,20 @@ import React, { useEffect, useState } from 'react';
 import "./css/style.sass";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import Validators from './Validators';
 
 function App() {
-    const [authToken, setAuthToken] = React.useState(true);
+    const [pubKey, setPubKey] = React.useState("1234");
+    const [currentAccount, setCurrentAccount] = useState("");
+
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const onSubmit = data => console.log(data);
 
     React.useEffect(() => {
         axios.get("./auth-token.txt").then((res) => {
-            setAuthToken(res.data);
+            //setAuthToken(res.data);
         })
     }, []);
 
-    const [currentAccount, setCurrentAccount] = useState("");
 
     const checkIfWalletIsConnected = async () => {
         try {
@@ -95,20 +95,52 @@ function App() {
                                 )}
                                 {currentAccount && (
                                     <form onSubmit={handleSubmit(onSubmit)} className="has-text-centered">
-                                        <input 
-                                            placeholder="testNode" 
-                                            {...register("nodeName", { required: true })} 
-                                            className="field input is-primary"
-                                        />
-                                        {errors.rewardAddress && <span>This field is required</span>}
-
-                                        <input 
-                                            placeholder="1234"
-                                            {...register("rewardAddress", { required: true })} 
-                                            className="field input is-primary input-background-color-white"
-                                        />
-                                        {errors.rewardAddress && <span>This field is required</span>}
                                         
+                                        <div className="field is-horizontal">
+                                            <div className="field-label is-normal">
+                                                <label className="label has-text-white">DisplayName</label>
+                                            </div>
+                                            <div className="field-body">
+                                                <div className="field">
+                                                    <p className="control">
+                                                    <input 
+                                                        placeholder="displayName" 
+                                                        {...register("nodeName", { required: true })} 
+                                                        className="field input is-primary"
+                                                    />
+                                                    {errors.rewardAddress && <span>This field is required</span>}                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="field is-horizontal">
+                                            <div className="field-label is-normal">
+                                                <label className="label has-text-white">Payout @</label>
+                                            </div>
+                                            <div className="field-body">
+                                                <div className="field">
+                                                    <p className="control">
+                                                    <input 
+                                                        value={currentAccount}
+                                                        {...register("rewardAddress", { required: true })} 
+                                                        className="field input is-primary input-background-color-white"
+                                                    />
+                                                    {errors.rewardAddress && <span>This field is required</span>}                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="field is-horizontal">
+                                            <div className="field-label is-normal">
+                                                <label className="label has-text-white">PubKey</label>
+                                            </div>
+                                            <div className="field-body">
+                                                <div className="field is-large">
+                                                        {pubKey}
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <button 
                                             type="submit" 
                                             className="button is-medium is-link"
@@ -118,7 +150,6 @@ function App() {
                                     </form>
                                 )}
                             </div>
-                            <Validators network="mainnet" apiToken={authToken} />
                         </div>
                     </div>
                 </div>
