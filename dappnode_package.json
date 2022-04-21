@@ -4,7 +4,7 @@
   "description": "Run an SSV node on your AVADO",
   "autoupdate": true,
   "type": "service",
-  "avatar": "/ipfs/QmYRmFCtdXvqq3drc6kBXxeWiiMatTfKVpVrmLX883cQbR",
+  "avatar": "/ipfs/QmXqrYJbWA6jxgXBn8hEbDdJrQrRZ2cJCUXD2wDedRfioD",
   "author": "sponnet",
   "image": {
     "volumes": [
