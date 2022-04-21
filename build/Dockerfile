@@ -21,6 +21,8 @@ RUN apk upgrade
 
 COPY supervisord.conf /etc/supervisord.conf
 COPY nginx.conf /etc/nginx/
+COPY entrypoint.sh /
+RUN chmod +x /entrypoint.sh
 
 WORKDIR /
 ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisord.conf"]
