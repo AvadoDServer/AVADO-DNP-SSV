@@ -4,7 +4,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 
 function App() {
-    const [pubKey, setPubKey] = React.useState("1234");
+    const [pubKey, setPubKey] = React.useState("LS0tLS1CRUdJTiBSU0EgUFVCTElDIEtFWS0tLS0tCk1JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBTUlJQkNnS0NBUUVBbndINlBQUDNEZVJ4T3BocUwvRFkKNnNWTnl4MTFiQ0pQcDVoTHVsZkNIVXp1TlVCUGhUZ05wQ2UyajhFNG0rd2JJRGZ1TjFPSmJhbGRleVdBcTJ1Kwp2TFo0SFhoby9HVzVOcVlTZ0VYUWpXbG5sNzFLejlHZHpQSG1MbGs1RldaYXNWZkZnZ09HM0I4eG9ncnA0VHp0CnJLS3BVdW5VZ2k4RXBLamx0MXBVUWFyWmRUenNyWC90V012Mm5YYWRXRm9XTG85N0lER0ltWE5YN2t4ZXZDRzQKMkxNcFZKMzh3WFRINVN1TExWa2hCa09ZTlBMYkl5YnJ1bE9SMHlwNjQ1OXY4TkFlK213K2xGNHQ1Y0t4S0VFdgp3QWNGc2RTOUkvNlVweW9GeEdENUxWcGJMQVZQUXNzT2pzUjhxeWNxVVBUNHZkR2llRzBWS2l3Vll0aEs0ZnZoCnJ3SURBUUFCCi0tLS0tRU5EIFJTQSBQVUJMSUMgS0VZLS0tLS0K");
     const [currentAccount, setCurrentAccount] = useState("");
     const [showKeyGen, setShowKeyGen] = useState(false);
 
@@ -124,7 +124,7 @@ function App() {
                                                     <input 
                                                         value={currentAccount}
                                                         {...register("rewardAddress", { required: true })} 
-                                                        className="field input is-primary input-background-color-white"
+                                                        className="field input is-primary"
                                                     />
                                                     {errors.rewardAddress && <span>This field is required</span>}                                                    </p>
                                                 </div>
@@ -136,9 +136,13 @@ function App() {
                                                 <label className="label has-text-white">PubKey</label>
                                             </div>
                                             <div className="field-body">
-                                                <div className="field is-large">
-                                                        {pubKey}
-                                                </div>
+                                                <input 
+                                                    value={pubKey}
+                                                    {...register("pubKey", { required: true })} 
+                                                    className="field input is-primary disabled"
+                                                    disabled
+                                                />
+                                                {errors.pubKey && <span>This field is required</span>}   
                                             </div>
                                         </div>
 
@@ -151,13 +155,7 @@ function App() {
                                     </form>
                                 )}
 
-                                <div className="m-3">
-                                    <button 
-                                        className="button is-small is-link"
-                                    >
-                                        show keygen
-                                    </button>
-                                </div>
+                                
                             </div>
                             
                         </div>
