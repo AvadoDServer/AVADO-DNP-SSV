@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 function App() {
     const [pubKey, setPubKey] = React.useState("1234");
     const [currentAccount, setCurrentAccount] = useState("");
+    const [showKeyGen, setShowKeyGen] = useState(false);
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const onSubmit = data => console.log(data);
@@ -149,7 +150,16 @@ function App() {
                                         </button>
                                     </form>
                                 )}
+
+                                <div className="m-3">
+                                    <button 
+                                        className="button is-small is-link"
+                                    >
+                                        show keygen
+                                    </button>
+                                </div>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
