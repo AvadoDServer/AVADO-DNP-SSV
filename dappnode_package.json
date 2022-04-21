@@ -4,13 +4,16 @@
   "description": "Run an SSV node on your AVADO",
   "autoupdate": true,
   "type": "service",
-  "avatar": "/ipfs/QmYRmFCtdXvqq3drc6kBXxeWiiMatTfKVpVrmLX883cQbR",
+  "avatar": "/ipfs/QmXqrYJbWA6jxgXBn8hEbDdJrQrRZ2cJCUXD2wDedRfioD",
   "author": "sponnet",
   "image": {
     "volumes": [
       "data:/data"
     ],
-    "ports": [],
+    "ports": [
+      "13000:13000",
+      "12000/udp"
+    ],
     "environment": [
       "EXTRA_OPTS=",
       "MY_DOCKER_ENV_VAR="
