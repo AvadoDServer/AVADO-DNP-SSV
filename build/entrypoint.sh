@@ -17,7 +17,6 @@ mkdir -p /data/db
 cp ${PUBLIC_KEY_FILE} /usr/local/wizard/build/
 cp ${PRIVATE_KEY_FILE} /usr/local/wizard/build/
 
-# TODO create configuration file
+# TODO create configuration file: hardcoded for now
 
-# Start SSV
 CONFIG_PATH=/config.yml make BUILD_PATH=/go/bin/ssvnode start-node
