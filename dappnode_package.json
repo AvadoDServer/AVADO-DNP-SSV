@@ -4,7 +4,7 @@
   "description": "Run an SSV node on your AVADO",
   "autoupdate": true,
   "type": "service",
-  "avatar": "/ipfs/QmXqrYJbWA6jxgXBn8hEbDdJrQrRZ2cJCUXD2wDedRfioD",
+  "avatar": "/ipfs/Qma6Dq8QjhgRbqjHxumG9kLM6YinF4JRvZ9TUD8a3M1Fje",
   "author": "sponnet",
   "image": {
     "volumes": [
@@ -17,7 +17,7 @@
     ]
   },
   "links": {
-    "homepage": "https://your-project-homepage-or-docs.io"
+    "OnboardingWizard": "http://ssv.my.ava.do"
   },
   "license": "GLP-3.0"
 }
