@@ -6,10 +6,10 @@ COPY wizard .
 # RUN npm i
 # RUN rm -Rf build && npm run build
 
-FROM alpine:latest
 
+FROM bloxstaking/ssv-node:v0.1.12
 
-RUN apk add --no-cache supervisor gcompat nginx nodejs npm
+RUN apk add --no-cache supervisor nginx
 RUN apk upgrade
 
 # COPY --from=builder /usr/src/app/wizard/build /usr/local/wizard
