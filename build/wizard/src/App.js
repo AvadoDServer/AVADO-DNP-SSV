@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import "./css/style.sass";
 import axios from "axios";
+import { useForm } from "react-hook-form";
 import Validators from './Validators';
 
 function App() {
     const [authToken, setAuthToken] = React.useState(true);
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const onSubmit = data => console.log(data);
 
     React.useEffect(() => {
         axios.get("./auth-token.txt").then((res) => {
@@ -81,15 +84,8 @@ function App() {
                                     Let's start by registering your ssv node
                                 </h2>
 
+                                <br />
 
-                                <p className="has-text-centered has-text-white">
-                                    tbd<br />
-                                </p><br />
-                                <p className="has-text-centered has-text-white">
-                                   tbd
-                                </p>
-                                <br />
-                                <br />
                                 {!currentAccount && (
                                     <p className="has-text-centered">
                                         <button className="button is-medium is-link" onClick={connectWallet}>
@@ -98,11 +94,28 @@ function App() {
                                     </p>
                                 )}
                                 {currentAccount && (
-                                    <p className="has-text-centered">
-                                        <a className="button is-medium is-link" target="_blank">
-                                            register
-                                        </a>
-                                    </p>
+                                    <form onSubmit={handleSubmit(onSubmit)} className="has-text-centered">
+                                        <input 
+                                            placeholder="testNode" 
+                                            {...register("nodeName", { required: true })} 
+                                            className="field input is-primary"
+                                        />
+                                        {errors.rewardAddress && <span>This field is required</span>}
+
+                                        <input 
+                                            placeholder="1234"
+                                            {...register("rewardAddress", { required: true })} 
+                                            className="field input is-primary input-background-color-white"
+                                        />
+                                        {errors.rewardAddress && <span>This field is required</span>}
+                                        
+                                        <button 
+                                            type="submit" 
+                                            className="button is-medium is-link"
+                                        >
+                                         register
+                                        </button>
+                                    </form>
                                 )}
                             </div>
                             <Validators network="mainnet" apiToken={authToken} />
