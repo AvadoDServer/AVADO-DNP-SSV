@@ -9,7 +9,7 @@ COPY wizard .
 
 FROM bloxstaking/ssv-node:v0.1.12
 
-RUN apk add --no-cache supervisor nginx
+RUN apk add --no-cache supervisor nginx jq
 RUN apk upgrade
 
 # COPY --from=builder /usr/src/app/wizard/build /usr/local/wizard
