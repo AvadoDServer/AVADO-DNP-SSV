@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import "./css/style.sass";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { StyledDropZone } from 'react-drop-zone'
+import 'react-drop-zone/dist/styles.css'
 
 function App() {
     const [pubKey, setPubKey] = React.useState("LS0tLS1CRUdJTiBSU0EgUFVCTElDIEtFWS0tLS0tCk1JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBTUlJQkNnS0NBUUVBbndINlBQUDNEZVJ4T3BocUwvRFkKNnNWTnl4MTFiQ0pQcDVoTHVsZkNIVXp1TlVCUGhUZ05wQ2UyajhFNG0rd2JJRGZ1TjFPSmJhbGRleVdBcTJ1Kwp2TFo0SFhoby9HVzVOcVlTZ0VYUWpXbG5sNzFLejlHZHpQSG1MbGs1RldaYXNWZkZnZ09HM0I4eG9ncnA0VHp0CnJLS3BVdW5VZ2k4RXBLamx0MXBVUWFyWmRUenNyWC90V012Mm5YYWRXRm9XTG85N0lER0ltWE5YN2t4ZXZDRzQKMkxNcFZKMzh3WFRINVN1TExWa2hCa09ZTlBMYkl5YnJ1bE9SMHlwNjQ1OXY4TkFlK213K2xGNHQ1Y0t4S0VFdgp3QWNGc2RTOUkvNlVweW9GeEdENUxWcGJMQVZQUXNzT2pzUjhxeWNxVVBUNHZkR2llRzBWS2l3Vll0aEs0ZnZoCnJ3SURBUUFCCi0tLS0tRU5EIFJTQSBQVUJMSUMgS0VZLS0tLS0K");
     const [currentAccount, setCurrentAccount] = useState("");
     const [splitValidatorKey, setSplitValidatorKey] = useState(false);
+    const [file, setFile] = useState("");
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const onSubmit = data => console.log(data);
@@ -95,13 +98,6 @@ function App() {
                                     </p>
                                 )}
                                 
-                                { splitValidatorKey
-                                    ? 
-                                    <div> true </div>
-                                    : 
-                                    <div> false</div>
-                                }
-                                
                                 {currentAccount && !splitValidatorKey && (
                                     <form onSubmit={handleSubmit(onSubmit)} className="has-text-centered">
                                         
@@ -176,12 +172,20 @@ function App() {
 
                                 {currentAccount && splitValidatorKey && (
                                     <div className="showkeygen">
-                                        <button 
-                                            className="button is-small is-link"
+                                        <StyledDropZone
+                                            onDrop={(file, text) => setFile(text)}
+                                        />
+                                        
+                                        {file !== "" && (
+                                            <div className="showkeygen">
+                                                <div>Key split 1: {file.substring(0,20)}</div>
+                                                <div>Key split 2: {file.substring(21,40)}</div>
+                                                <div>Key split 3: {file.substring(41,60)}</div>
+                                                <div>Key split 4: {file.substring(61,80)}</div>
+                                                <div>Key split 5: {file.substring(81,100)}</div>
+                                            </div>
+                                        )}
 
-                                        >
-                                            split validator key
-                                        </button>
                                     </div>
                                 )}
 
