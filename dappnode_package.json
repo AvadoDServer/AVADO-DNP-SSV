@@ -1,26 +1,23 @@
 {
   "name": "ssv.avado.dappnode.eth",
   "version": "0.0.1",
-  "description": "Run an SSV node on your AVADO",
+  "description": "SSV operator package",
   "autoupdate": true,
   "type": "service",
-  "avatar": "/ipfs/Qma6Dq8QjhgRbqjHxumG9kLM6YinF4JRvZ9TUD8a3M1Fje",
-  "author": "sponnet",
+  "avatar": "/ipfs/QmYRmFCtdXvqq3drc6kBXxeWiiMatTfKVpVrmLX883cQbR",
+  "author": "sp",
   "image": {
     "volumes": [
-      "data:/data"
+      "ssv:/data"
     ],
     "ports": [
-      "13000:13000",
-      "12000/udp"
+      "13001:13001",
+      "12001/udp"
     ],
     "environment": [
       "EXTRA_OPTS=",
       "MY_DOCKER_ENV_VAR="
     ]
-  },
-  "links": {
-    "OnboardingWizard": "http://ssv.my.ava.do"
   },
   "license": "GLP-3.0"
 }

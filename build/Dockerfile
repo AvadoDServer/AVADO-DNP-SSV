@@ -1,3 +1,5 @@
+ARG UPSTREAM_VERSION
+
 FROM node:16.14.0 as builder
 
 # build wizard
@@ -6,26 +8,22 @@ COPY wizard .
 RUN yarn
 RUN rm -Rf build && yarn build
 
+FROM --platform=linux/amd64 bloxstaking/ssv-node:${UPSTREAM_VERSION}
 
-FROM bloxstaking/ssv-node:v0.1.12
+RUN apk add --no-cache yq --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+RUN apk add --no-cache supervisor nginx 
 
-RUN apk add --no-cache supervisor nginx jq
-RUN apk upgrade
-
+# copy wizard
 COPY --from=builder /usr/src/app/wizard/build /usr/local/wizard
 
-# # Monitor
-# WORKDIR /usr/src/monitor
-# COPY monitor .
-# RUN npm i --production
+# SSV config template
+ADD config.yml .
 
-COPY supervisord.conf /etc/supervisord.conf
-COPY nginx.conf /etc/nginx/
-COPY entrypoint.sh /
-COPY config.yml /
+# supervisor, nginx, entrypoint
+ADD supervisord.conf /etc/supervisord.conf
+ADD nginx.conf /etc/nginx/
+ADD entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
 WORKDIR /
 ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisord.conf"]
-
-
