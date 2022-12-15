@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "description": "SSV operator package",
   "autoupdate": true,
+  "upstream": "v3.4.0",
   "type": "service",
-  "avatar": "/ipfs/QmYRmFCtdXvqq3drc6kBXxeWiiMatTfKVpVrmLX883cQbR",
+  "avatar": "/ipfs/Qma6Dq8QjhgRbqjHxumG9kLM6YinF4JRvZ9TUD8a3M1Fje",
   "author": "sp",
   "image": {
     "volumes": [
@@ -12,11 +13,10 @@
     ],
     "ports": [
       "13001:13001",
-      "12001/udp"
+      "12001:12001/udp"
     ],
     "environment": [
-      "EXTRA_OPTS=",
-      "MY_DOCKER_ENV_VAR="
+      "EXTRA_OPTS="
     ]
   },
   "license": "GLP-3.0"

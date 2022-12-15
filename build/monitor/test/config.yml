@@ -2,7 +2,7 @@ db:
   Path: /data/db
 eth2:
   Network: "prater"
-  BeaconNodeAddr: "teku.my.ava.do:5051"
+  BeaconNodeAddr: "http://prysm-beacon-chain-prater.my.ava.do:5051"
 eth1:
   ETH1Addr: "ws://goerli-geth.my.ava.do:8546"
   RegistryContractAddr: "0x687fb596F3892904F879118e2113e1EEe8746C2E"
