@@ -1,5 +1,6 @@
 import { useContractRead } from "wagmi";
 import config from '../../utils/contractConfig.json'
+import { utils } from 'ethers';
 
 // https://docs.ssv.network/developers/smart-contracts/operator-methods
 
@@ -26,11 +27,12 @@ export function useOperatorById(id: number) {
     })
 
     if (data) {
+        
         const data_array: any[] = data as any[];
         const operatorData: Operator = {
             name: data_array[0],
             ownerAddress: data_array[1],
-            publicKey: data_array[2],
+            publicKey: utils.toUtf8String(utils.stripZeros(data_array[2])),
             validators: data_array[3],
             fee: data_array[4],
             score: data_array[5],

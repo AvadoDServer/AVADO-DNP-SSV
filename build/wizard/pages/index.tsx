@@ -7,6 +7,7 @@ import { OperatorStatus } from '../components/OperatorStatus';
 import { useOperatorId } from '../hooks/Operators';
 import { RegisterOperator } from '../components/RegisterOperator';
 import { DownloadBackup } from '../components/DownloadBackup';
+import { RestoreBackup } from '../components/RestoreBackup';
 
 const Home: NextPage = () => {
 
@@ -39,7 +40,7 @@ const Home: NextPage = () => {
         {operatorId > 0 && (
           <>
             <OperatorStatus operatorId={operatorId} />
-            <DownloadBackup/>
+            <DownloadBackup />
           </>
         )}
 
@@ -52,6 +53,13 @@ const Home: NextPage = () => {
             )}
 
             <ConnectButton />
+
+            {!isConnected && (
+              <>
+                <div>Or restore a backup</div>
+                <RestoreBackup />
+              </>
+            )}
 
             {isConnected && (
               <>

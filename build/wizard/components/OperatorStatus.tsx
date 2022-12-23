@@ -4,6 +4,8 @@ import { BigNumber, utils } from 'ethers';
 import { useAddressBalance } from '../hooks/read/useAddressBalance';
 import { useOperatorStatus } from '../hooks/Operators';
 import { useOperatorById } from '../hooks/read/useOperatorById';
+import { useValidatorsByOwnerAddress } from '../hooks/read/useValidatorsByOwnerAddress';
+import { useEffect } from 'react';
 
 const web3 = new Web3();
 
@@ -12,6 +14,14 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
     const { data: operator, error: errorOperator } = useOperatorById(operatorId)
     const { data: addressBalance, error: errorAddressBalance, isLoading: isLoadingAddressBalance } = useAddressBalance(operator?.ownerAddress)
     const { data: operatorApiStatus, error: errorOperatorApi } = useOperatorStatus({ operatorId })
+    const { data: validators, error: errorsValidators, isLoading: isLoadingValidators } = useValidatorsByOwnerAddress(operator?.ownerAddress)
+
+
+    useEffect(() => {
+        if (validators) {
+            console.log(JSON.stringify(validators))
+        }
+    }, [validators]);
 
     const displayBalance = (addressBalance: any) => {
         const balance = addressBalance as BigNumber;
@@ -21,6 +31,18 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
     const displayPercentage = (performance: any) => {
         const perf = performance as number;
         return perf.toFixed(2) + "%"
+    }
+
+    const displayTrimmed = (input: string) => {
+        //TODO: what is the correct way of doing this? No idead where the unwanted prefix comes from
+        var trimmedInput = input
+            .replace(/[\u0000-\u001F\u007F-\u009F]/g, "")
+            .trim();
+        trimmedInput = trimmedInput.substring(trimmedInput.indexOf("d") + 1);
+
+        if (trimmedInput.length < 50)
+            return input;
+        return <abbr title={trimmedInput}>{trimmedInput.substring(0, 20) + "…" + trimmedInput.substring(trimmedInput.length - 20)}</abbr>
     }
 
     return (
@@ -48,11 +70,18 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
                         <code className={styles.code}>Owner address: {operator.ownerAddress}</code>
                     </div>
                     <div className={styles.description}>
-                        <code className={styles.code}>Public key: {utils.toUtf8String(operator.publicKey)}</code>
+                        <code className={styles.code}>Public key: {displayTrimmed(operator.publicKey)}</code>
                     </div>
                     <div className={styles.description}>
                         <code className={styles.code}>Validators: {operator.validators.toString()}</code>
                     </div>
+                    {validators && (
+                        <>
+                            {validators.map((validator) => {
+                                return <div key={validator}>{validator}</div>
+                            })}
+                        </>
+                    )}
                     <div className={styles.description}>
                         <code className={styles.code}>Fee: {operator.fee.toString()}</code>
                     </div>
@@ -62,6 +91,7 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
                     <div className={styles.description}>
                         <code className={styles.code}>Active: {operator.active ? "true" : "false"}</code>
                     </div>
+
                     <div className={styles.description}>
                         <code className={styles.code}>Balance: {
                             operator?.ownerAddress && (
