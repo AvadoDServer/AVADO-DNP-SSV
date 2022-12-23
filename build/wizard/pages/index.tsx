@@ -6,6 +6,7 @@ import { useAccount } from 'wagmi';
 import { OperatorStatus } from '../components/OperatorStatus';
 import { useOperatorId } from '../hooks/Operators';
 import { RegisterOperator } from '../components/RegisterOperator';
+import { DownloadBackup } from '../components/DownloadBackup';
 
 const Home: NextPage = () => {
 
@@ -38,6 +39,7 @@ const Home: NextPage = () => {
         {operatorId > 0 && (
           <>
             <OperatorStatus operatorId={operatorId} />
+            <DownloadBackup/>
           </>
         )}
 

@@ -3,7 +3,7 @@ const corsMiddleware = require("restify-cors-middleware2");
 const axios = require('axios').default;
 const yaml = require('js-yaml');
 const fs = require('fs');
-const {server_config} = require('./config.js')
+const { server_config } = require('./config.js')
 
 const getConfig = () => yaml.load(fs.readFileSync(server_config.config_file_path, 'utf8'));
 
@@ -47,6 +47,14 @@ server.get("/operatorId", (req, res, next) => {
     next()
 });
 
+server.get("/config", (req, res, next) => {
+    const config = getConfig();
+    if (server_config.dev)
+        console.log("config:", config)
+    res.send(200, config);
+    next()
+});
+
 server.get("/operatorPublicKey", (req, res, next) => {
     const config = getConfig();
     const key = "OperatorPublicKey" in config ? config.OperatorPublicKey : "";
@@ -59,7 +67,7 @@ server.post("/operatorId", (req, res, next) => {
         res.send(400, "not enough parameters");
         return next();
     } else {
-        const id  = req.body.id;
+        const id = req.body.id;
         console.log("Setting operator id " + id)
         const config = getConfig();
         config.OperatorId = id;
@@ -75,7 +83,7 @@ server.post("/registrationTransaction", (req, res, next) => {
         res.send(400, "not enough parameters");
         return next();
     } else {
-        const hash  = req.body.hash;
+        const hash = req.body.hash;
         console.log("Setting registration hash " + hash)
         const config = getConfig();
         config.RegistrationHash = hash;
@@ -100,7 +108,7 @@ server.get("/operators/owned_by/:address", (req, res, next) => {
     const address = req.params.address;
     if (address) {
         const url = `https://api.ssv.network/api/v1/operators/owned_by/${address}`
-        if (development)
+        if (server_config.dev)
             console.log(url)
         get(url, res, next)
     }
