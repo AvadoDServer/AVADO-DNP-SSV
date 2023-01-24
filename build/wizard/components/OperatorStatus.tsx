@@ -6,6 +6,8 @@ import { useOperatorStatus } from '../hooks/Operators';
 import { useOperatorById } from '../hooks/read/useOperatorById';
 import { useValidatorsByOwnerAddress } from '../hooks/read/useValidatorsByOwnerAddress';
 import { useEffect } from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSatelliteDish, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const web3 = new Web3();
 
@@ -64,7 +66,7 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
                         <code className={styles.code}>Operator name: {operator.name}</code>
                     </div>
                     <div className={styles.description}>
-                        <code className={styles.code}>Operator ID: {operatorId}</code>
+                        <code className={styles.code}>Operator ID: <a href={`https://explorer.ssv.network/operators/${operatorId}`}>{operatorId}</a></code>
                     </div>
                     <div className={styles.description}>
                         <code className={styles.code}>Owner address: {operator.ownerAddress}</code>
@@ -78,7 +80,9 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
                     {validators && (
                         <>
                             {validators.map((validator) => {
-                                return <div key={validator}>{validator}</div>
+                                return <div key={validator}>
+                                    <a href={`https://explorer.ssv.network/validators/${validator}`}>{validator}</a><a href={`https://prater.beaconcha.in/validator/${validator}`}><FontAwesomeIcon className="icon" icon={faSatelliteDish} /></a>
+                                </div>
                             })}
                         </>
                     )}
