@@ -49,7 +49,7 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
 
     return (
         <div>
-            <h2 className={styles.title}>
+            <h2 className="title is-2">
                 Operator Node Status
             </h2>
 
@@ -62,64 +62,106 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
 
             {!errorOperator && operator && (
                 <>
-                    <div className={styles.description}>
-                        <code className={styles.code}>Operator name: {operator.name}</code>
-                    </div>
-                    <div className={styles.description}>
-                        <code className={styles.code}>Operator ID: <a href={`https://explorer.ssv.network/operators/${operatorId}`}>{operatorId}</a></code>
-                    </div>
-                    <div className={styles.description}>
-                        <code className={styles.code}>Owner address: {operator.ownerAddress}</code>
-                    </div>
-                    <div className={styles.description}>
-                        <code className={styles.code}>Public key: {displayTrimmed(operator.publicKey)}</code>
-                    </div>
-                    <div className={styles.description}>
-                        <code className={styles.code}>Validators: {operator.validators.toString()}</code>
-                    </div>
-                    {validators && (
-                        <>
-                            {validators.map((validator) => {
-                                return <div key={validator}>
-                                    <a href={`https://explorer.ssv.network/validators/${validator}`}>{validator}</a><a href={`https://prater.beaconcha.in/validator/${validator}`}><FontAwesomeIcon className="icon" icon={faSatelliteDish} /></a>
-                                </div>
-                            })}
-                        </>
-                    )}
-                    <div className={styles.description}>
-                        <code className={styles.code}>Fee: {operator.fee.toString()}</code>
-                    </div>
-                    <div className={styles.description}>
-                        <code className={styles.code}>Score: {operator.score.toString()}</code>
-                    </div>
-                    <div className={styles.description}>
-                        <code className={styles.code}>Active: {operator.active ? "true" : "false"}</code>
-                    </div>
+                    <div>
+                        <div>
+                            <table className="table">
+                                <tbody>
+                                    {/* <tr>
+                                        <td><b>Execution (ETH1) node</b></td>
+                                        <td><SyncStatusTag progress={nodeSyncStatus.ecStatus.primaryEcStatus.syncProgress} /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Beacon chain (ETH2) node</b></td>
+                                        <td><SyncStatusTag progress={nodeSyncStatus.bcStatus.primaryEcStatus.syncProgress} /></td>
+                                    </tr> */}
+                                    <tr>
+                                        <td><b>Operator name</b></td>
+                                        <td>{operator.name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Operator ID</b></td>
+                                        <td>
+                                            <a href={`https://explorer.ssv.network/operators/${operatorId}`}>
+                                                <img src="ssv.png" alt="ssv.network" className="icon"></img> {operatorId}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Owner address</b></td>
+                                        <td><a href={`https://etherscan.io/address/${operator.ownerAddress}`}>
+                                            <img src="etherscan-1.png" alt="etherscan.network" className="icon"></img> {operator.ownerAddress}
+                                        </a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Public key</b></td>
+                                        <td>{displayTrimmed(operator.publicKey)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Validators</b></td>
+                                        <td>{operator.validators.toString()}</td>
+                                    </tr>
+                                    {validators && (
+                                        <>
+                                            {validators.map((validator) => {
+                                                return <tr key={validator}>
+                                                    <td></td>
+                                                    <td>
+                                                        <a href={`https://explorer.ssv.network/validators/${validator}`}>
+                                                            <img src="ssv.png" alt="ssv.network" className="icon"></img>
+                                                        </a>
+                                                        <a href={`https://prater.beaconcha.in/validator/${validator}`}>
+                                                            <FontAwesomeIcon className="icon" icon={faSatelliteDish} />
+                                                        </a>
+                                                        {validator}
+                                                    </td>
 
-                    <div className={styles.description}>
-                        <code className={styles.code}>Balance: {
-                            operator?.ownerAddress && (
-                                <>
-                                    {isLoadingAddressBalance && `Loading balance for ${operator?.ownerAddress}...`}
-                                    {addressBalance && displayBalance(addressBalance)}
-                                    {errorAddressBalance && JSON.stringify(errorAddressBalance)}
-                                </>)
-                        }</code>
-                    </div>
-                </>
-            )}
+                                                </tr>
 
-            {errorOperatorApi ? (
-                <div>
-                    Error loading operator status from SSV API.
-                </div>
-            ) : operatorApiStatus && (
-                <>
-                    <div className={styles.description}>
-                        <code className={styles.code}>Performance last 24h: {displayPercentage(operatorApiStatus?.performance['24h'])}</code>
-                    </div>
-                    <div className={styles.description}>
-                        <code className={styles.code}>Performance last 30d: {displayPercentage(operatorApiStatus?.performance['30d'])}</code>
+                                            })}
+                                        </>
+                                    )}
+                                    <tr>
+                                        <td><b>Fee</b></td>
+                                        <td>{operator.fee.toString()}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Score</b></td>
+                                        <td>{operator.score.toString()}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Active</b></td>
+                                        <td>{`${operator.active}`}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Balance</b></td>
+                                        <td>{
+                                            operator?.ownerAddress && (
+                                                <>
+                                                    {isLoadingAddressBalance && `Loading balance for ${operator?.ownerAddress}...`}
+                                                    {addressBalance && displayBalance(addressBalance)}
+                                                    {errorAddressBalance && JSON.stringify(errorAddressBalance)}
+                                                </>)
+                                        }</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Performance last 24h</b></td>
+                                        <td>
+                                            {errorOperatorApi ? (<>Error loading operator status from SSV API.</>)
+                                                : <> {operatorApiStatus && displayPercentage(operatorApiStatus?.performance['24h'])}</>
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Performance last 30d</b></td>
+                                        <td>
+                                            {errorOperatorApi ? (<>Error loading operator status from SSV API.</>)
+                                                : <> {operatorApiStatus && displayPercentage(operatorApiStatus?.performance['30d'])}</>
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </>
             )}
