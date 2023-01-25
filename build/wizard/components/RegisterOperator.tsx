@@ -30,9 +30,10 @@ export const RegisterOperator = ({ address }: { address?: string }) => {
 
         axios.post(`${server_config.monitor_url}/operatorId`, { id })
             .catch(e => { console.error(e) })
-
-        //reload page
-        window.location.reload();
+            .then(res => {
+                //reload page
+                window.location.reload();
+            })
     }
 
     const { data: transactionResult, error: transactionError, write: register } = useRegisterOperator({ name, publicKey: utils.hexlify(utils.toUtf8Bytes(publicKey ?? "")), fee, onRegistered });

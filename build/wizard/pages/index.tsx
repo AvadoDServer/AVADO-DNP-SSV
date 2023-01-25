@@ -55,7 +55,6 @@ const Home: NextPage = () => {
 
             {!isConnected && (
               <>
-                <div>Or restore a backup</div>
                 <RestoreBackup />
               </>
             )}

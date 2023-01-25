@@ -5,7 +5,7 @@ const yaml = require('js-yaml');
 const fs = require('fs');
 const { server_config } = require('./config.js')
 
-const getConfig = () => yaml.load(fs.readFileSync(server_config.config_file_path, 'utf8'));
+const getConfig = () => yaml.load(fs.readFileSync(server_config.config_file_path, 'utf8')) ?? {};
 
 console.log("Monitor starting...");
 
@@ -60,6 +60,19 @@ server.get("/operatorPublicKey", (req, res, next) => {
     const key = "OperatorPublicKey" in config ? config.OperatorPublicKey : "";
     res.send(200, { "data": key });
     next()
+});
+
+server.post("/restoreConfig", (req, res, next) => {
+    if (!req.body || !req.body.config) {
+        res.send(400, "not enough parameters");
+        return next();
+    } else {
+        console.log("Restoring configuration from a backup")
+        const config = req.body.config;
+        fs.writeFileSync(server_config.config_file_path, config, 'utf8');
+        res.send(200, `Backup is restored`);
+        return next();
+    }
 });
 
 server.post("/operatorId", (req, res, next) => {

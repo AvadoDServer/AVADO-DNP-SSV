@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSatelliteDish, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { server_config } from '../config'
+import { OperatorType } from '../types'
 
 const web3 = new Web3();
 
@@ -72,7 +73,7 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
                                         <td><b>Beacon node status</b></td>
                                         <td>{beaconNodeStatus && (
                                             <>
-                                                {beaconNodeStatus.error ?
+                                                {beaconNodeStatus.error || !beaconNodeStatus.data ?
                                                     <>Could not get Status</>
                                                     : <>{beaconNodeStatus.data.data.is_syncing ? "syncing" : "in sync"}</>
                                                 }
@@ -149,22 +150,19 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
                                                 </>)
                                         }</td>
                                     </tr>
-                                    <tr>
-                                        <td><b>Performance last 24h</b></td>
-                                        <td>
-                                            {errorOperatorApi ? (<>Error loading operator status from SSV API.</>)
-                                                : <> {operatorApiStatus && displayPercentage(operatorApiStatus?.performance['24h'])}</>
-                                            }
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Performance last 30d</b></td>
-                                        <td>
-                                            {errorOperatorApi ? (<>Error loading operator status from SSV API.</>)
-                                                : <> {operatorApiStatus && displayPercentage(operatorApiStatus?.performance['30d'])}</>
-                                            }
-                                        </td>
-                                    </tr>
+
+                                    {operatorApiStatus &&
+                                        Object.entries(operatorApiStatus?.performance).map(([key, value]) =>
+                                            <tr key={key}>
+                                                <td><b>Performance last {key}</b></td>
+                                                <td>{errorOperatorApi ?
+                                                    <>Error loading operator status from SSV API.</>
+                                                    : <> {displayPercentage(value)}</>
+                                                }
+                                                </td>
+                                            </tr>
+                                        )
+                                    }
                                 </tbody>
                             </table>
                         </div>
