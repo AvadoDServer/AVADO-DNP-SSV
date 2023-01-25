@@ -74,6 +74,11 @@ export const RegisterOperator = ({ address }: { address?: string }) => {
         }
     }
 
+    const etherscanUrl = (txHash: string) => {
+        const prefix = server_config.network === "goerli" ? "goerli." : ""
+        return `https://${prefix}etherscan.io/tx/${txHash}`
+    }
+
     return (
         <div>
             {public_key_error ? (
@@ -97,7 +102,7 @@ export const RegisterOperator = ({ address }: { address?: string }) => {
                                 <Spinner />
                                 <p><b>DO NOT CLOSE THIS WINDOW</b></p>
                                 <p>Please wait for the transaction to finish, this is necessary to capture your operator ID.</p>
-                                {transactionResult && (<p>Waiting for transaction <a target="_blank" rel="noopener noreferrer" href={"https://goerli.etherscan.io/tx/" + transactionResult.hash}>{transactionResult.hash}</a></p>)}
+                                {transactionResult && (<p>Waiting for transaction <a target="_blank" rel="noopener noreferrer" href={etherscanUrl(transactionResult.hash)}>{transactionResult.hash}</a></p>)}
                             </>
                         )}
                         {transactionError && (

@@ -2,12 +2,13 @@ import styles from '../styles/Home.module.css';
 import Web3 from 'web3';
 import { BigNumber, utils } from 'ethers';
 import { useAddressBalance } from '../hooks/read/useAddressBalance';
-import { useOperatorStatus } from '../hooks/Operators';
+import { useOperatorStatus, useBeaconNodeStatus } from '../hooks/Operators';
 import { useOperatorById } from '../hooks/read/useOperatorById';
 import { useValidatorsByOwnerAddress } from '../hooks/read/useValidatorsByOwnerAddress';
 import { useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSatelliteDish, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { server_config } from '../config'
 
 const web3 = new Web3();
 
@@ -17,6 +18,7 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
     const { data: addressBalance, error: errorAddressBalance, isLoading: isLoadingAddressBalance } = useAddressBalance(operator?.ownerAddress)
     const { data: operatorApiStatus, error: errorOperatorApi } = useOperatorStatus({ operatorId })
     const { data: validators, error: errorsValidators, isLoading: isLoadingValidators } = useValidatorsByOwnerAddress(operator?.ownerAddress)
+    const beaconNodeStatus = useBeaconNodeStatus();
 
 
     useEffect(() => {
@@ -66,14 +68,18 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
                         <div>
                             <table className="table">
                                 <tbody>
-                                    {/* <tr>
-                                        <td><b>Execution (ETH1) node</b></td>
-                                        <td><SyncStatusTag progress={nodeSyncStatus.ecStatus.primaryEcStatus.syncProgress} /></td>
-                                    </tr>
                                     <tr>
-                                        <td><b>Beacon chain (ETH2) node</b></td>
-                                        <td><SyncStatusTag progress={nodeSyncStatus.bcStatus.primaryEcStatus.syncProgress} /></td>
-                                    </tr> */}
+                                        <td><b>Beacon node status</b></td>
+                                        <td>{beaconNodeStatus && (
+                                            <>
+                                                {beaconNodeStatus.error ?
+                                                    <>Could not get Status</>
+                                                    : <>{beaconNodeStatus.data.data.is_syncing ? "syncing" : "in sync"}</>
+                                                }
+                                            </>
+                                        )}
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td><b>Operator name</b></td>
                                         <td>{operator.name}</td>
@@ -88,7 +94,7 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
                                     </tr>
                                     <tr>
                                         <td><b>Owner address</b></td>
-                                        <td><a href={`https://etherscan.io/address/${operator.ownerAddress}`}>
+                                        <td><a href={`https://${server_config.network === "goerli" ? "goerli." : ""}etherscan.io/address/${operator.ownerAddress}`}>
                                             <img src="etherscan-1.png" alt="etherscan.network" className="icon"></img> {operator.ownerAddress}
                                         </a></td>
                                     </tr>

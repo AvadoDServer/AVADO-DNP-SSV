@@ -45,7 +45,17 @@ export function isRegistered() {
 export function useOperatorId() {
     const api_url: string = `${server_config.monitor_url}/operatorId`;
     const { data, error } = get(api_url)
+    if (error)
+        console.log(error)
     return { data: data as number, error: error };
+}
+
+export function useBeaconNodeStatus() {
+    const api_url: string = `${server_config.monitor_url}/beaconNodeStatus`;
+    const { data, error } = get(api_url)
+    if (error)
+        console.log(error)
+    return { data: data, error: error };
 }
 
 

@@ -22,7 +22,7 @@ export const DownloadBackup = () => {
     return (
         <div>
             <button
-                className="btn text-white bg-gradient-to-r from-pink-500 to-violet-500"
+                className="button"
                 onClick={downloadBackup}>
                 Download Backup
             </button>

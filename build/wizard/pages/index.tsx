@@ -15,14 +15,6 @@ const Home: NextPage = () => {
 
   const { data: operatorId, error: error } = useOperatorId()
 
-  // const [operatorId, setOperatorId] = useState<number>(-1);
-
-  // useEffect(() => {
-  //   if (id) {
-  //     setOperatorId(id);
-  //   }
-  // }, [id]);
-
   return (
     <div className={styles.container}>
       <Head>
@@ -36,6 +28,13 @@ const Home: NextPage = () => {
       <main className={styles.main}>
 
         <h1 className={styles.title}>Welcome to Avado SSV</h1>
+
+        {error && (
+          <>
+            <div>Could not connect to your Avado</div>
+            <div>({error.message})</div>
+          </>
+        )}
 
         {operatorId > 0 && (
           <>

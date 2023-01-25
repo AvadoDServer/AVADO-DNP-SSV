@@ -115,6 +115,21 @@ server.get("/operators/owned_by/:address", (req, res, next) => {
 });
 
 
+server.get("/beaconNodeStatus", (req, res, next) => {
+    const config = getConfig();
+    console.dir(config)
+    const beaconNodeAddr = config.eth2.BeaconNodeAddr;
+    if (beaconNodeAddr) {
+        const url = `${beaconNodeAddr}/eth/v1/node/syncing`
+        get(url, res, next)
+    } else {
+        console.log("Invalid config");
+        res.send(200, "Invalid config)")
+        next()
+    }
+});
+
+
 const get = (url, res, next) => {
     axios.get(url,
         {
