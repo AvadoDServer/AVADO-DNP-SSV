@@ -1,6 +1,6 @@
 ARG UPSTREAM_VERSION
 
-FROM node:16.14.0 as builder
+FROM node:16.15.0 as builder
 
 # build wizard
 WORKDIR /usr/src/app/wizard

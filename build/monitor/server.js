@@ -5,7 +5,10 @@ const yaml = require('js-yaml');
 const fs = require('fs');
 const { server_config } = require('./config.js')
 
-const getConfig = () => yaml.load(fs.readFileSync(server_config.config_file_path, 'utf8')) ?? {};
+const getConfig = () => {
+    const config = yaml.load(fs.readFileSync(server_config.config_file_path, 'utf8'))
+    return config ? config : {}
+}
 
 console.log("Monitor starting...");
 
