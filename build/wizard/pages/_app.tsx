@@ -17,6 +17,7 @@ const { chains, provider, webSocketProvider } = configureChains(
   [
     jsonRpcProvider({
       rpc: (chain) => ({
+        // http: `http://nethermind-goerli.my.ava.do:8545`, //FIXME: support Nethermind
         http: `http://goerli-geth.my.ava.do:8545`,
       }),
     }),

@@ -1,6 +1,6 @@
-import styles from '../styles/Home.module.css';
 import axios from 'axios';
 import { server_config } from "../config"
+const yaml = require('js-yaml');
 
 export const DownloadBackup = () => {
 
@@ -8,8 +8,8 @@ export const DownloadBackup = () => {
         const element = document.createElement("a");
 
         axios.get(`${server_config.monitor_url}/config`).then((res) => {
-            const config = res.data;
-            const blob = new Blob([JSON.stringify(config, null, 2)], {
+            const config = yaml.dump(res.data)
+            const blob = new Blob([config], {
                 type: "application/json",
             });
             element.href = URL.createObjectURL(blob);

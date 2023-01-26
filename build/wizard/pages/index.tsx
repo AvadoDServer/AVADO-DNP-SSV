@@ -27,7 +27,7 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
 
-        <h1 className={styles.title}>Welcome to Avado SSV</h1>
+        <h1 className="title is-1">Welcome to Avado SSV</h1>
 
         {error && (
           <>
