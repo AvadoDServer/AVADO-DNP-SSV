@@ -2,7 +2,7 @@ import styles from '../styles/Home.module.css';
 import Web3 from 'web3';
 import { BigNumber, utils } from 'ethers';
 import { useAddressBalance } from '../hooks/read/useAddressBalance';
-import { useOperatorStatus, useBeaconNodeStatus } from '../hooks/Operators';
+import { useOperatorStatus, useBeaconNodeStatus, useValidatorsInOperator } from '../hooks/Operators';
 import { useOperatorById } from '../hooks/read/useOperatorById';
 import { useValidatorsByOwnerAddress } from '../hooks/read/useValidatorsByOwnerAddress';
 import { useEffect } from 'react';
@@ -18,15 +18,9 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
     const { data: operator, error: errorOperator } = useOperatorById(operatorId)
     const { data: addressBalance, error: errorAddressBalance, isLoading: isLoadingAddressBalance } = useAddressBalance(operator?.ownerAddress)
     const { data: operatorApiStatus, error: errorOperatorApi } = useOperatorStatus({ operatorId })
-    const { data: validators, error: errorsValidators, isLoading: isLoadingValidators } = useValidatorsByOwnerAddress(operator?.ownerAddress)
+    const { data: own_validators, error: errorsOwnValidators, isLoading: isLoadingOwnValidators } = useValidatorsByOwnerAddress(operator?.ownerAddress)
+    const { data: all_validators, error: errorsAllValidators } = useValidatorsInOperator({ operatorId })
     const beaconNodeStatus = useBeaconNodeStatus();
-
-
-    useEffect(() => {
-        if (validators) {
-            console.log(JSON.stringify(validators))
-        }
-    }, [validators]);
 
     const displayBalance = (addressBalance: any) => {
         const balance = addressBalance as BigNumber;
@@ -48,6 +42,11 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
         if (trimmedInput.length < 50)
             return input;
         return <abbr title={trimmedInput}>{trimmedInput.substring(0, 20) + "…" + trimmedInput.substring(trimmedInput.length - 20)}</abbr>
+    }
+
+    const readibleFee = (fee: BigNumber) => {
+        const oneSSV = BigNumber.from(417000000000)
+        return fee.div(oneSSV)
     }
 
     return (
@@ -103,38 +102,57 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
                                         <td><b>Public key</b></td>
                                         <td>{displayTrimmed(operator.publicKey)}</td>
                                     </tr>
+                                    {own_validators && (
+                                        <>
+                                            <tr>
+                                                <td><b>Own Validators</b></td>
+                                                <td>{own_validators.length}</td>
+                                            </tr>
+                                            {own_validators.map(validator => <tr key={validator}>
+                                                <td></td>
+                                                <td>
+                                                    <a href={`https://explorer.ssv.network/validators/${validator}`}>
+                                                        <img src="ssv.png" alt="ssv.network" className="icon"></img>
+                                                    </a>
+                                                    <a href={`https://prater.beaconcha.in/validator/${validator}`}>
+                                                        <FontAwesomeIcon className="icon" icon={faSatelliteDish} />
+                                                    </a>
+                                                    {validator}
+                                                </td>
+
+                                            </tr>
+                                            )}
+                                        </>
+                                    )}
                                     <tr>
-                                        <td><b>Validators</b></td>
+                                        <td><b>All Validators</b></td>
                                         <td>{operator.validators.toString()}</td>
                                     </tr>
-                                    {validators && (
+                                    {all_validators && (
                                         <>
-                                            {validators.map((validator) => {
-                                                return <tr key={validator}>
-                                                    <td></td>
-                                                    <td>
-                                                        <a href={`https://explorer.ssv.network/validators/${validator}`}>
-                                                            <img src="ssv.png" alt="ssv.network" className="icon"></img>
-                                                        </a>
-                                                        <a href={`https://prater.beaconcha.in/validator/${validator}`}>
-                                                            <FontAwesomeIcon className="icon" icon={faSatelliteDish} />
-                                                        </a>
-                                                        {validator}
-                                                    </td>
-
-                                                </tr>
-
-                                            })}
+                                            {all_validators.map(validator => <tr key={validator.public_key}>
+                                                <td></td>
+                                                <td>
+                                                    <a href={`https://explorer.ssv.network/validators/${validator.public_key}`}>
+                                                        <img src="ssv.png" alt="ssv.network" className="icon"></img>
+                                                    </a>
+                                                    <a href={`https://prater.beaconcha.in/validator/${validator.public_key}`}>
+                                                        <FontAwesomeIcon className="icon" icon={faSatelliteDish} />
+                                                    </a>
+                                                    {`0x${validator.public_key}`}
+                                                </td>
+                                            </tr>
+                                            )}
                                         </>
                                     )}
                                     <tr>
                                         <td><b>Fee</b></td>
-                                        <td>{operator.fee.toString()}</td>
+                                        <td>{readibleFee(operator.fee).toString()}</td>
                                     </tr>
-                                    <tr>
+                                    {/* <tr>
                                         <td><b>Score</b></td>
                                         <td>{operator.score.toString()}</td>
-                                    </tr>
+                                    </tr> */}
                                     <tr>
                                         <td><b>Active</b></td>
                                         <td>{`${operator.active}`}</td>

@@ -1,8 +1,6 @@
 import useSWR from "swr";
 import axios from "axios";
-import { OperatorType } from "../types";
-
-
+import { OperatorType, ValidatorType } from "../types";
 import {server_config} from "../config"
 
 function get(api_url: string) {
@@ -19,6 +17,16 @@ export function useOperatorOwnedBy({
     const api_url: string = `${server_config.monitor_url}/operators/owned_by/${address}`;
     const { data, error } = get(api_url)
     return { data: data?.operators[0] as OperatorType, error: error };
+}
+
+export function useValidatorsInOperator({
+    operatorId,
+}: {
+    operatorId?: number,
+}) {
+    const api_url: string = `${server_config.monitor_url}/validators/in_operator/${operatorId}`;
+    const { data, error } = get(api_url)
+    return { data: data?.validators as ValidatorType[], error: error };
 }
 
 export function useOperatorStatus({

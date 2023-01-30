@@ -27,4 +27,16 @@ export type OperatorType = {
     // "is_active": 0,
     // "status": "Inactive",
     "validators_count": number
-  }
+}
+
+export type ValidatorType = {
+    "public_key": string,
+    "owner_address": string,
+    "status": string,
+    "operators": OperatorType[],
+    "validator_info": {
+        "index": number,
+        "status": string,
+        "activation_epoch": number
+    }
+}

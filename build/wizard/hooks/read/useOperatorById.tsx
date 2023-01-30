@@ -1,6 +1,6 @@
 import { useContractRead } from "wagmi";
 import config from '../../utils/contractConfig.json'
-import { utils } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 
 // https://docs.ssv.network/developers/smart-contracts/operator-methods
 
@@ -9,7 +9,7 @@ type Operator = {
     ownerAddress: string, //The operator’s admin address (for management purposes).
     publicKey: string, //The operator public key
     validators: number, //The amount of managed validators
-    fee: number, //The fee charged by the operator (denominated as $SSV tokens per block)
+    fee: BigNumber, //The fee charged by the operator (denominated as $SSV tokens per block)
     score: number, //The operator score
     active: boolean, //Operator network status
 }
