@@ -1,7 +1,7 @@
 {
   "name": "ssv.avado.dappnode.eth",
-  "version": "0.0.4",
-  "upstream": "v3.4.0",
+  "version": "0.0.5",
+  "upstream": "v0.4.0",
   "autoupdate": true,
   "title": "SSV.network operator package",
   "description": "Distributed validator support with ssv.network",
