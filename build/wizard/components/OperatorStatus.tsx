@@ -147,7 +147,7 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
                                     )}
                                     <tr>
                                         <td><b>Fee</b></td>
-                                        <td>{readibleFee(operator.fee).toString()}</td>
+                                        <td>{readibleFee(operator.fee).toString()} SSV</td>
                                     </tr>
                                     {/* <tr>
                                         <td><b>Score</b></td>
