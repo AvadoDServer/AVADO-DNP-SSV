@@ -1,23 +1,29 @@
 {
   "name": "ssv.avado.dappnode.eth",
-  "version": "0.0.1",
-  "description": "SSV operator package",
+  "version": "0.0.6",
+  "upstream": "v0.4.0",
   "autoupdate": true,
+  "title": "SSV.network operator package",
+  "description": "Distributed validator support with ssv.network",
+  "avatar": "/ipfs/Qma6Dq8QjhgRbqjHxumG9kLM6YinF4JRvZ9TUD8a3M1Fje",
   "type": "service",
-  "avatar": "/ipfs/QmYRmFCtdXvqq3drc6kBXxeWiiMatTfKVpVrmLX883cQbR",
-  "author": "sp",
   "image": {
+    "environment": [
+      "EXTRA_OPTS="
+    ],
     "volumes": [
       "ssv:/data"
     ],
+    "restart": "always",
     "ports": [
       "13001:13001",
-      "12001/udp"
-    ],
-    "environment": [
-      "EXTRA_OPTS=",
-      "MY_DOCKER_ENV_VAR="
+      "12001:12001/udp"
     ]
   },
-  "license": "GLP-3.0"
+  "author": "AVADO",
+  "license": "GLP-3.0",
+  "links": {
+    "Github": "https://github.com/AvadoDServer/AVADO-DNP-SSV",
+    "OnboardingWizard": "http://ssv.my.ava.do"
+  }
 }
