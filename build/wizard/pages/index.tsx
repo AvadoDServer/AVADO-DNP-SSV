@@ -71,6 +71,8 @@ const Home: NextPage = () => {
       </main>
 
       <footer className={styles.footer}>
+        <a href="http://my.ava.do/#/Packages/ssv.avado.dappnode.eth/detail">Logs</a>
+        <br />
         <a href="https://ava.do" target="_blank" rel="noopener noreferrer">
           Made with ❤️ by your frens at Avado
         </a>

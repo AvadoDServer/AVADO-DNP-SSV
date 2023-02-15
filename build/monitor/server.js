@@ -113,7 +113,7 @@ server.post("/registrationTransaction", (req, res, next) => {
 server.get("/operators/:id", (req, res, next) => {
     const id = req.params.id;
     if (id) {
-        const url = `https://api.ssv.network/api/v1/operators/${id}`
+        const url = `https://api.ssv.network/api/v3/${server_config.network}/operators/${id}`
         if (server_config.dev)
             console.log(url)
         get(url, res, next)
@@ -123,7 +123,7 @@ server.get("/operators/:id", (req, res, next) => {
 server.get("/operators/owned_by/:address", (req, res, next) => {
     const address = req.params.address;
     if (address) {
-        const url = `https://api.ssv.network/api/v1/operators/owned_by/${address}`
+        const url = `https://api.ssv.network/api/v3/${server_config.network}/operators/owned_by/${address}`
         if (server_config.dev)
             console.log(url)
         get(url, res, next)
@@ -133,7 +133,7 @@ server.get("/operators/owned_by/:address", (req, res, next) => {
 server.get("/validators/in_operator/:id", (req, res, next) => {
     const id = req.params.id;
     if (id) {
-        const url = `https://api.ssv.network/api/v1/validators/in_operator/${id}`
+        const url = `https://api.ssv.network/api/v3/${server_config.network}/validators/in_operator/${id}`
         if (server_config.dev)
             console.log(url)
         get(url, res, next)
