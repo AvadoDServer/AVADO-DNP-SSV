@@ -8,6 +8,7 @@ import { useOperatorId } from '../hooks/Operators';
 import { RegisterOperator } from '../components/RegisterOperator';
 import { DownloadBackup } from '../components/DownloadBackup';
 import { RestoreBackup } from '../components/RestoreBackup';
+import { SsvButtons } from '../components/SsvButtons';
 
 const Home: NextPage = () => {
 
@@ -39,6 +40,7 @@ const Home: NextPage = () => {
         {operatorId > 0 && (
           <>
             <OperatorStatus operatorId={operatorId} />
+            <SsvButtons operatorId={operatorId} />
             <DownloadBackup />
           </>
         )}
