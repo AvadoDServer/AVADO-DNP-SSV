@@ -1,6 +1,6 @@
 {
   "name": "ssv.avado.dappnode.eth",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "upstream": "v0.4.0",
   "autoupdate": true,
   "title": "SSV.network operator package",
