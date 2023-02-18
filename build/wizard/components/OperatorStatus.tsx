@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSatelliteDish, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { server_config } from '../config'
 import { OperatorType } from '../types'
+import ClickToCopy from "./ClickToCopy";
 
 const web3 = new Web3();
 
@@ -41,7 +42,7 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
 
         if (trimmedInput.length < 50)
             return input;
-        return <abbr title={trimmedInput}>{trimmedInput.substring(0, 20) + "…" + trimmedInput.substring(trimmedInput.length - 20)}</abbr>
+        return  <ClickToCopy text={trimmedInput}>{<abbr title={trimmedInput}>{trimmedInput.substring(0, 20) + "…" + trimmedInput.substring(trimmedInput.length - 20)}</abbr>}</ClickToCopy>        
     }
 
     const readibleFee = (fee: BigNumber) => {
