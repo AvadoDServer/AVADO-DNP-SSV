@@ -9,6 +9,7 @@ import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { goerli } from 'wagmi/chains'
+import {server_config} from '../config'
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
@@ -17,8 +18,7 @@ const { chains, provider, webSocketProvider } = configureChains(
   [
     jsonRpcProvider({
       rpc: (chain) => ({
-        // http: `http://nethermind-goerli.my.ava.do:8545`, //FIXME: support Nethermind
-        http: `http://goerli-geth.my.ava.do:8545`,
+        http: server_config.execution_client,
       }),
     }),
     alchemyProvider({
