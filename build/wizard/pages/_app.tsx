@@ -18,7 +18,7 @@ const { chains, provider, webSocketProvider } = configureChains(
   [
     jsonRpcProvider({
       rpc: (chain) => ({
-        http: server_config.execution_client,
+        http: server_config.execution_client_rest,
       }),
     }),
     alchemyProvider({

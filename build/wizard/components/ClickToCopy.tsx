@@ -7,10 +7,9 @@ const ClickToCopy = ({ children, text }: { children: any, text: string }) => {
     const [copied, setCopied] = React.useState(false);
     return (
 
-        <span className="icon-text">
+        <span className="icon-text icon">
             <span>{children}</span>&nbsp;
             <CopyToClipboard text={text}
-                className="icon"
                 onCopy={() => {
                     setCopied(true)
                     setTimeout(() => { setCopied(false) }, 2000);

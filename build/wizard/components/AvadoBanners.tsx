@@ -32,7 +32,7 @@ const Comp = () => {
             {!dappManagerHelper && (
                 <section className="hero is-danger">
                     <div className="hero-body is-small">
-                        <p className="has-text-centered">Avado Connection problem. Check your browser's console log for more details.</p>
+                        <p className="has-text-centered">{"Avado Connection problem. Check your browser's console log for more details."}</p>
                     </div>
                 </section>
             )}

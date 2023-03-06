@@ -1,4 +1,4 @@
-import { useContractRead } from "wagmi";
+import { Address, useContractRead } from "wagmi";
 import config from '../../utils/contractConfig.json'
 import { BigNumber, utils } from 'ethers';
 
@@ -6,7 +6,7 @@ import { BigNumber, utils } from 'ethers';
 
 type Operator = {
     name: string, // The operator’s display name
-    ownerAddress: string, //The operator’s admin address (for management purposes).
+    ownerAddress: Address, //The operator’s admin address (for management purposes).
     publicKey: string, //The operator public key
     validators: number, //The amount of managed validators
     fee: BigNumber, //The fee charged by the operator (denominated as $SSV tokens per block)
@@ -20,7 +20,7 @@ export function useOperatorById(id: number) {
         return { data: null, error: "test", isLoading: true };
 
     const { data, error, isLoading } = useContractRead({
-        address: config.address,
+        address: config.address as Address,
         abi: config.abi,
         functionName: 'getOperatorById',
         args: [id],
