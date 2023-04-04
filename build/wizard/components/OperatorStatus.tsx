@@ -14,7 +14,7 @@ import ClickToCopy from "./ClickToCopy";
 
 const web3 = new Web3();
 
-export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
+export const OperatorStatus = ({ operatorId }: { operatorId: bigint }) => {
 
     const { data: operator, error: errorOperator } = useOperatorById(operatorId)
     const { data: addressBalance, error: errorAddressBalance, isLoading: isLoadingAddressBalance } = useAddressBalance(operator?.ownerAddress)
@@ -42,7 +42,7 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
 
         if (trimmedInput.length < 50)
             return input;
-        return  <ClickToCopy text={trimmedInput}>{<abbr title={trimmedInput}>{trimmedInput.substring(0, 20) + "…" + trimmedInput.substring(trimmedInput.length - 20)}</abbr>}</ClickToCopy>        
+        return <ClickToCopy text={trimmedInput}>{<abbr title={trimmedInput}>{trimmedInput.substring(0, 20) + "…" + trimmedInput.substring(trimmedInput.length - 20)}</abbr>}</ClickToCopy>
     }
 
     const readibleFee = (fee: BigNumber) => {
@@ -82,14 +82,10 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Operator name</b></td>
-                                        <td>{operator.name}</td>
-                                    </tr>
-                                    <tr>
                                         <td><b>Operator ID</b></td>
                                         <td>
                                             <a href={`https://explorer.ssv.network/operators/${operatorId}`}>
-                                                <img src="ssv.png" alt="ssv.network" className="icon"></img> {operatorId}
+                                                <img src="ssv.png" alt="ssv.network" className="icon"></img> {operatorId.toString()}
                                             </a>
                                         </td>
                                     </tr>
@@ -99,10 +95,10 @@ export const OperatorStatus = ({ operatorId }: { operatorId: number }) => {
                                             <img src="etherscan-1.png" alt="etherscan.network" className="icon"></img> {operator.ownerAddress}
                                         </a></td>
                                     </tr>
-                                    <tr>
+                                    {/* <tr>
                                         <td><b>Public key</b></td>
                                         <td>{displayTrimmed(operator.publicKey)}</td>
-                                    </tr>
+                                    </tr> */}
                                     {own_validators && (
                                         <>
                                             <tr>

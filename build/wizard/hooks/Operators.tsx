@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import axios from "axios";
 import { OperatorType, ValidatorType } from "../types";
-import {server_config} from "../config"
+import { server_config } from "../config"
 
 function get(api_url: string) {
     const fetcher = async (url: string) => await axios.get(url).then((res) => res.data);
@@ -22,7 +22,7 @@ export function useOperatorOwnedBy({
 export function useValidatorsInOperator({
     operatorId,
 }: {
-    operatorId?: number,
+    operatorId?: bigint,
 }) {
     const api_url: string = `${server_config.monitor_url}/validators/in_operator/${operatorId}`;
     const { data, error } = get(api_url)
@@ -32,7 +32,7 @@ export function useValidatorsInOperator({
 export function useOperatorStatus({
     operatorId,
 }: {
-    operatorId?: number,
+    operatorId?: bigint,
 }) {
     const api_url: string = `${server_config.monitor_url}/operators/${operatorId}`;
     const { data, error } = get(api_url)
@@ -55,7 +55,8 @@ export function useOperatorId() {
     const { data, error } = get(api_url)
     if (error)
         console.log(error)
-    return { data: data as number, error: error };
+    const operatorId = data ? BigInt(data.hex) : undefined
+    return { data: operatorId, error: error };
 }
 
 export function useBeaconNodeStatus() {

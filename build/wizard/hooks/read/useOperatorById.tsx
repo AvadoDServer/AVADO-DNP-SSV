@@ -1,43 +1,38 @@
 import { Address, useContractRead } from "wagmi";
-import config from '../../utils/contractConfig.json'
+import config from '../../utils/ssvNetworkViewsConfig.json'
 import { BigNumber, utils } from 'ethers';
 
 // https://docs.ssv.network/developers/smart-contracts/operator-methods
 
 type Operator = {
-    name: string, // The operator’s display name
     ownerAddress: Address, //The operator’s admin address (for management purposes).
-    publicKey: string, //The operator public key
-    validators: number, //The amount of managed validators
     fee: BigNumber, //The fee charged by the operator (denominated as $SSV tokens per block)
-    score: number, //The operator score
+    validators: number, //The amount of managed validators
     active: boolean, //Operator network status
 }
 
-export function useOperatorById(id: number) {
+export function useOperatorById(id: bigint) {
 
-    if (id === 0)
+    if (id === 0n)
         return { data: null, error: "test", isLoading: true };
 
     const { data, error, isLoading } = useContractRead({
         address: config.address as Address,
         abi: config.abi,
         functionName: 'getOperatorById',
-        args: [id],
+        args: [id.toString()],
     })
 
     if (data) {
-        
+
         const data_array: any[] = data as any[];
         const operatorData: Operator = {
-            name: data_array[0],
-            ownerAddress: data_array[1],
-            publicKey: utils.toUtf8String(utils.stripZeros(data_array[2])),
-            validators: data_array[3],
-            fee: data_array[4],
-            score: data_array[5],
-            active: data_array[6]
+            ownerAddress: data_array[0],
+            fee: data_array[1],
+            validators: data_array[2],
+            active: data_array[3]
         }
+        console.log(operatorData)
         return { data: operatorData as Operator, error, isLoading };
     }
 

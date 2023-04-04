@@ -22,8 +22,8 @@ if [ ! -f ${CONFIG_PATH} ]; then
     yq eval --inplace '.OperatorPublicKey = "'${OPERATOR_PUBLIC_KEY}'"' ${CONFIG_PATH}
 
     yq eval --inplace '.eth2.Network = "prater"' ${CONFIG_PATH}
-    yq eval --inplace '.eth2.BeaconNodeAddr = "http://prysm-beacon-chain-prater.my.ava.do:3500"' ${CONFIG_PATH}
-    yq eval --inplace '.eth1.ETH1Addr = "ws://goerli-geth.my.ava.do:8546"' ${CONFIG_PATH}
+    yq eval --inplace '.eth2.BeaconNodeAddr = "http://teku-prater.my.ava.do:5051"' ${CONFIG_PATH}
+    yq eval --inplace '.eth1.ETH1Addr = "ws://nethermind-goerli.my.ava.do:8546"' ${CONFIG_PATH}
 
     yq eval --inplace '.RegistryContractAddr="0xb9e155e65b5c4d66df28da8e9a0957f06f11bc04" | .RegistryContractAddr style="double"' ${CONFIG_PATH}
 

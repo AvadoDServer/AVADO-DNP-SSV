@@ -15,7 +15,7 @@ export const RegisterOperator = ({ address }: { address?: string }) => {
     const [name, setName] = useState<string>("");
     const [fee, setFee] = useState<number>(3);
 
-    const onRegistered = (id: number) => {
+    const onRegistered = (id: bigint) => {
         setIsRegistering(false)
         console.log(`Registered as ${id}`)
 

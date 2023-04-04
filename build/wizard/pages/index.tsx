@@ -16,6 +16,8 @@ const Home: NextPage = () => {
 
   const { data: operatorId, error: error } = useOperatorId()
 
+  console.log(operatorId)
+
   return (
     <div className={styles.container}>
       <Head>
@@ -37,7 +39,7 @@ const Home: NextPage = () => {
           </>
         )}
 
-        {operatorId > 0 && (
+        {operatorId > 0n && (
           <>
             <OperatorStatus operatorId={operatorId} />
             <SsvButtons operatorId={operatorId} />
@@ -45,7 +47,7 @@ const Home: NextPage = () => {
           </>
         )}
 
-        {operatorId === 0 && (
+        {operatorId === 0n && (
           <>
             {!isConnected && (
               <>
