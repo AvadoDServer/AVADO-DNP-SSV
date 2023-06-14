@@ -16,7 +16,7 @@ const Home: NextPage = () => {
 
   const { data: operatorId, error: error } = useOperatorId()
 
-  console.log(operatorId)
+  console.log("OperatorId", operatorId)
 
   return (
     <div className={styles.container}>
@@ -39,7 +39,7 @@ const Home: NextPage = () => {
           </>
         )}
 
-        {operatorId > 0n && (
+        {operatorId && operatorId > 0n && (
           <>
             <OperatorStatus operatorId={operatorId} />
             <SsvButtons operatorId={operatorId} />
@@ -47,8 +47,10 @@ const Home: NextPage = () => {
           </>
         )}
 
-        {operatorId === 0n && (
+
+        {(!operatorId || operatorId === 0n) && (
           <>
+            test
             {!isConnected && (
               <>
                 <div>Click the <b>Connect Wallet</b> button below to connect to the wallet you want to use to register as SSV operator.</div>

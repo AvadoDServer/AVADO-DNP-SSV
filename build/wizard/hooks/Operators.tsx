@@ -55,7 +55,8 @@ export function useOperatorId() {
     const { data, error } = get(api_url)
     if (error)
         console.log(error)
-    const operatorId = data ? BigInt(data.hex) : undefined
+    // console.log(data)
+    const operatorId = data ? BigInt(data) : undefined
     return { data: operatorId, error: error };
 }
 
@@ -66,5 +67,3 @@ export function useBeaconNodeStatus() {
         console.log(error)
     return { data: data, error: error };
 }
-
-

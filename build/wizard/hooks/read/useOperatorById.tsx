@@ -32,7 +32,7 @@ export function useOperatorById(id: bigint) {
             validators: data_array[2],
             active: data_array[3]
         }
-        console.log(operatorData)
+        // console.log(operatorData)
         return { data: operatorData as Operator, error, isLoading };
     }
 

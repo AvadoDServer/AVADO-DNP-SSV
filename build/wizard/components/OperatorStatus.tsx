@@ -1,15 +1,12 @@
 import styles from '../styles/Home.module.css';
 import Web3 from 'web3';
 import { BigNumber, utils } from 'ethers';
-import { useAddressBalance } from '../hooks/read/useAddressBalance';
 import { useOperatorStatus, useBeaconNodeStatus, useValidatorsInOperator } from '../hooks/Operators';
 import { useOperatorById } from '../hooks/read/useOperatorById';
-import { useValidatorsByOwnerAddress } from '../hooks/read/useValidatorsByOwnerAddress';
 import { useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSatelliteDish, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { server_config } from '../config'
-import { OperatorType } from '../types'
 import ClickToCopy from "./ClickToCopy";
 
 const web3 = new Web3();
@@ -17,9 +14,7 @@ const web3 = new Web3();
 export const OperatorStatus = ({ operatorId }: { operatorId: bigint }) => {
 
     const { data: operator, error: errorOperator } = useOperatorById(operatorId)
-    const { data: addressBalance, error: errorAddressBalance, isLoading: isLoadingAddressBalance } = useAddressBalance(operator?.ownerAddress)
     const { data: operatorApiStatus, error: errorOperatorApi } = useOperatorStatus({ operatorId })
-    const { data: own_validators, error: errorsOwnValidators, isLoading: isLoadingOwnValidators } = useValidatorsByOwnerAddress(operator?.ownerAddress)
     const { data: all_validators, error: errorsAllValidators } = useValidatorsInOperator({ operatorId })
     const beaconNodeStatus = useBeaconNodeStatus();
 
@@ -47,6 +42,8 @@ export const OperatorStatus = ({ operatorId }: { operatorId: bigint }) => {
 
     const readibleFee = (fee: BigNumber) => {
         const oneSSV = BigNumber.from(417000000000)
+        // console.log(oneSSV)
+        // console.log(fee)
         return fee.div(oneSSV)
     }
 
@@ -99,28 +96,6 @@ export const OperatorStatus = ({ operatorId }: { operatorId: bigint }) => {
                                         <td><b>Public key</b></td>
                                         <td>{displayTrimmed(operator.publicKey)}</td>
                                     </tr> */}
-                                    {own_validators && (
-                                        <>
-                                            <tr>
-                                                <td><b>Own Validators</b></td>
-                                                <td>{own_validators.length}</td>
-                                            </tr>
-                                            {own_validators.map(validator => <tr key={validator}>
-                                                <td></td>
-                                                <td>
-                                                    <a href={`https://explorer.ssv.network/validators/${validator}`}>
-                                                        <img src="ssv.png" alt="ssv.network" className="icon"></img>
-                                                    </a>
-                                                    <a href={`https://prater.beaconcha.in/validator/${validator}`}>
-                                                        <FontAwesomeIcon className="icon" icon={faSatelliteDish} />
-                                                    </a>
-                                                    {validator}
-                                                </td>
-
-                                            </tr>
-                                            )}
-                                        </>
-                                    )}
                                     <tr>
                                         <td><b>All Validators</b></td>
                                         <td>{operator.validators.toString()}</td>
@@ -153,17 +128,6 @@ export const OperatorStatus = ({ operatorId }: { operatorId: bigint }) => {
                                     <tr>
                                         <td><b>Active</b></td>
                                         <td>{`${operator.active}`}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Balance</b></td>
-                                        <td>{
-                                            operator?.ownerAddress && (
-                                                <>
-                                                    {isLoadingAddressBalance && `Loading balance for ${operator?.ownerAddress}...`}
-                                                    {addressBalance && displayBalance(addressBalance)}
-                                                    {errorAddressBalance && JSON.stringify(errorAddressBalance)}
-                                                </>)
-                                        }</td>
                                     </tr>
 
                                     {operatorApiStatus &&

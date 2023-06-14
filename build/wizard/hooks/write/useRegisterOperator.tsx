@@ -7,7 +7,7 @@ import {
 } from "wagmi";
 import contractConfig from '../../utils/contractConfig.json'
 
-export function useRegisterOperator({ name, publicKey, fee, onRegistered }: { name: string, publicKey: any, fee: BigNumber, onRegistered: (id: bigint) => void }) {
+export function useRegisterOperator({ name, publicKey, fee, onRegistered }: { name: string, publicKey: string, fee: BigNumber, onRegistered: (id: bigint) => void }) {
 
   const { config } = usePrepareContractWrite({
     address: contractConfig.address as Address,
@@ -17,11 +17,14 @@ export function useRegisterOperator({ name, publicKey, fee, onRegistered }: { na
   })
   const { data, isLoading, isSuccess, error, write } = useContractWrite(config)
 
+  console.log("PubKey", publicKey)
+
   useContractEvent({
     address: contractConfig.address as Address,
     abi: contractConfig.abi,
     eventName: 'OperatorAdded',
     listener(id: any, name, ownerAddress, publicKey, fee) {
+      console.log("ID", id)
       onRegistered(BigInt(id.toString()))
     },
   })

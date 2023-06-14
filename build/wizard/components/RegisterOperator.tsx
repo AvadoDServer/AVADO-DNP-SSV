@@ -19,7 +19,7 @@ export const RegisterOperator = ({ address }: { address?: string }) => {
         setIsRegistering(false)
         console.log(`Registered as ${id}`)
 
-        axios.post(`${server_config.monitor_url}/operatorId`, { id })
+        axios.post(`${server_config.monitor_url}/operatorId`, { id: id.toString() })
             .catch(e => { console.error(e) })
             .then(res => {
                 //reload page
@@ -38,7 +38,25 @@ export const RegisterOperator = ({ address }: { address?: string }) => {
         // |        680 | 8340100000000	 |                20 |
     }
 
-    const { data: transactionResult, error: transactionError, write: register } = useRegisterOperator({ name, publicKey: utils.hexlify(utils.toUtf8Bytes(publicKey ?? "")), fee: convertFee(fee), onRegistered });
+    if (false) {
+        const base64Decoded = Buffer.from(publicKey ?? "", 'base64').toString('utf-8')
+        console.log(base64Decoded);
+    }
+
+    const hexKey = (publicKey: string | undefined) => {
+        if (!publicKey)
+            return "0x00"
+        const key = utils.hexlify(utils.toUtf8Bytes(publicKey ?? "")).substring(2)
+        return `0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000264${key}00000000000000000000000000000000000000000000000000000000`
+    }
+
+    const { data: transactionResult, error: transactionError, write: register } = useRegisterOperator(
+        {
+            name,
+            publicKey: hexKey(publicKey),
+            fee: convertFee(fee),
+            onRegistered
+        });
 
     useEffect(() => {
         if (transactionResult) {
@@ -91,7 +109,7 @@ export const RegisterOperator = ({ address }: { address?: string }) => {
                         Error loading your public SSV operator Key.
                     </p>
                     <code>
-                        {public_key_error}
+                        {JSON.stringify(public_key_error)}
                     </code>
                     <p>
                         Consider resetting this package on the <a href="http://my.ava.do/#/Packages/ssv.avado.dappnode.eth/detail">SSV package management page</a>

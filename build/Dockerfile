@@ -17,7 +17,7 @@ RUN yarn --production
 FROM --platform=linux/amd64 bloxstaking/ssv-node:${UPSTREAM_VERSION}
 
 RUN apk add --no-cache yq --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
-RUN apk add --no-cache supervisor nginx nodejs
+RUN apk add --no-cache supervisor nginx nodejs curl
 
 # copy wizard & monitor
 COPY --from=builder /usr/src/app/wizard/out /usr/local/wizard
