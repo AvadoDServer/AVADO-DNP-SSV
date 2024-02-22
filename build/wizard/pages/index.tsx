@@ -1,22 +1,34 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 import type { NextPage } from 'next';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import { useAccount } from 'wagmi';
-import { OperatorStatus } from '../components/OperatorStatus';
-import { useOperatorId } from '../hooks/Operators';
-import { RegisterOperator } from '../components/RegisterOperator';
-import { DownloadBackup } from '../components/DownloadBackup';
-import { RestoreBackup } from '../components/RestoreBackup';
-import { SsvButtons } from '../components/SsvButtons';
+import { OperatorInfo } from '../components/OperatorInfo';
+// import { DownloadBackup } from '../components/DownloadBackup';
+// import { RestoreBackup } from '../components/RestoreBackup';
+import { useOperatorPublicKey } from '../hooks/read/useMonitor';
 
 const Home: NextPage = () => {
+  const [isReady, setIsReady] = useState(false);
 
-  const { isConnected, address } = useAccount()
+  useEffect(() => setIsReady(true), []);
 
-  const { data: operatorId, error: error } = useOperatorId()
+  // const { isConnected, address, status } = useAccount()
 
-  console.log("OperatorId", operatorId)
+  const { data: operatorPubKey, error: error } = useOperatorPublicKey();
+
+  // console.log("operatorPubKey", operatorPubKey)
+
+  if (!isReady) return null;
+
+  if (error) {
+    return (
+      <>
+        <div>Could not connect to your Avado</div>
+        <div>({error.message})</div>
+      </>
+    )
+  }
 
   return (
     <div className={styles.container}>
@@ -30,7 +42,7 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
 
-        <h1 className="title is-1">Welcome to Avado SSV</h1>
+
 
         {error && (
           <>
@@ -39,18 +51,18 @@ const Home: NextPage = () => {
           </>
         )}
 
-        {operatorId && operatorId > 0n && (
+        {operatorPubKey && (
           <>
-            <OperatorStatus operatorId={operatorId} />
-            <SsvButtons operatorId={operatorId} />
-            <DownloadBackup />
+            <OperatorInfo operatorPubKey={`${operatorPubKey}`} />
+            {/* <SsvButtons operatorPubKey={operatorPubKey} /> */}
+            {/* <DownloadBackup /> */}
           </>
         )}
 
 
-        {(!operatorId || operatorId === 0n) && (
+        {/* {(!operatorPubKey) && (
           <>
-            test
+            <h1 className="title is-1">Welcome to Avado SSV</h1>
             {!isConnected && (
               <>
                 <div>Click the <b>Connect Wallet</b> button below to connect to the wallet you want to use to register as SSV operator.</div>
@@ -73,7 +85,7 @@ const Home: NextPage = () => {
               </>
             )}
           </>
-        )}
+        )} */}
       </main>
 
       <footer className={styles.footer}>

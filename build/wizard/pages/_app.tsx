@@ -8,12 +8,13 @@ import { configureChains, createClient, WagmiConfig } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
-import { goerli } from 'wagmi/chains'
+import { goerli, mainnet } from 'wagmi/chains'
 import {server_config} from '../config'
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
-    goerli
+    // goerli
+    mainnet
   ],
   [
     jsonRpcProvider({
@@ -36,7 +37,7 @@ const { connectors } = getDefaultWallets({
 });
 
 const wagmiClient = createClient({
-  autoConnect: true,
+  autoConnect: false,
   connectors,
   provider,
   webSocketProvider,
@@ -44,11 +45,11 @@ const wagmiClient = createClient({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
+    // <WagmiConfig client={wagmiClient}>
+    //   <RainbowKitProvider chains={chains}>
         <Component {...pageProps} />
-      </RainbowKitProvider>
-    </WagmiConfig>
+    //   </RainbowKitProvider>
+    // </WagmiConfig>
 
   );
 }

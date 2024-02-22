@@ -94,7 +94,6 @@ export const RestoreBackup = () => {
     // TODO: why are angledown and up icons not visible?
     return (
         <>
-            <>Or</>
             <div>
                 <section className="section">
                     <div className="container">

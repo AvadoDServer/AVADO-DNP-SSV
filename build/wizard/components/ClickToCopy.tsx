@@ -8,15 +8,17 @@ const ClickToCopy = ({ children, text }: { children: any, text: string }) => {
     return (
 
         <span className="icon-text icon">
-            <span>{children}</span>&nbsp;
+
             <CopyToClipboard text={text}
                 onCopy={() => {
                     setCopied(true)
                     setTimeout(() => { setCopied(false) }, 2000);
-                }}>
-                <FontAwesomeIcon
-                    icon={faCopy}
-                />
+                }}><>
+                    <span>{children}</span>&nbsp;
+                    <FontAwesomeIcon
+                        icon={faCopy}
+                    />
+                </>
             </CopyToClipboard>
             {copied && (<span className="is-size-6">&nbsp;Copied!</span>)}
         </span>
