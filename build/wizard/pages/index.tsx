@@ -7,6 +7,9 @@ import { OperatorInfo } from '../components/OperatorInfo';
 // import { DownloadBackup } from '../components/DownloadBackup';
 // import { RestoreBackup } from '../components/RestoreBackup';
 import { useOperatorPublicKey } from '../hooks/read/useMonitor';
+import { DownloadBackup } from '../components/DownloadBackup';
+import { SsvButtons } from '../components/SsvButtons';
+import AvadoBanners from '../components/AvadoBanners';
 
 const Home: NextPage = () => {
   const [isReady, setIsReady] = useState(false);
@@ -42,8 +45,6 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
 
-
-
         {error && (
           <>
             <div>Could not connect to your Avado</div>
@@ -54,7 +55,6 @@ const Home: NextPage = () => {
         {operatorPubKey && (
           <>
             <OperatorInfo operatorPubKey={`${operatorPubKey}`} />
-            {/* <SsvButtons operatorPubKey={operatorPubKey} /> */}
             {/* <DownloadBackup /> */}
           </>
         )}

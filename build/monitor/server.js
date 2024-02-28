@@ -188,6 +188,26 @@ const get = (url, res, next) => {
         )
 }
 
+const listAllRoutes = (server) => {
+    return Object.values(server.router.getRoutes()).map(value =>
+        [value.method, value.path]
+    );
+}
+
+server.get("/", (req, res, next) => {
+    const routes = listAllRoutes(server)
+        .filter(([method, path]) => path !== "/")
+        .map(([method, path]) => `<li><a href="${path}">${path}</a> (${method})</li>`);
+
+    var body = `<html><body><ul>routes: ${routes.join("\n")}</ul></body></html>`;
+    res.writeHead(200, {
+        'Content-Length': Buffer.byteLength(body),
+        'Content-Type': 'text/html'
+    });
+    res.write(body);
+    res.end();
+});
+
 
 server.listen(9999, function () {
     console.log("%s listening at %s", server.name, server.url);

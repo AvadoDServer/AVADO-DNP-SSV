@@ -9,13 +9,10 @@
   "author": "heeckhau",
   "license": "Apache-2.0",
   "dependencies": {
-    "@types/node": "^20.11.6",
-    "@types/restify": "^8.5.5",
     "axios": "^1.6.5",
     "js-yaml": "^4.1.0",
     "restify": "^11.1.0",
     "restify-cors-middleware2": "^2.1.2",
-    "ssv-cluster-scanner": "^0.1.6",
-    "typescript": "^5.3.3"
+    "ssv-cluster-scanner": "^0.1.6"
   }
 }
