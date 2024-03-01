@@ -24,6 +24,7 @@ if [ ! -f ${CONFIG_FILE} ]; then
 
     yq eval --inplace '.KeyStore.PrivateKeyFile = "'${PRIVATE_KEY_FILE}'"' ${CONFIG_FILE}
     yq eval --inplace '.KeyStore.PasswordFile = "'${PASSWORD_FILE}'"' ${CONFIG_FILE}
+
 else
     echo "### Config file already exists"
 fi
@@ -32,6 +33,10 @@ yq eval --inplace '.db.Path = "'${DB_FOLDER}'"' ${CONFIG_FILE}
 yq eval --inplace '.ssv.Network = "'${NETWORK}'"' ${CONFIG_FILE}
 yq eval --inplace '.eth2.BeaconNodeAddr = "'${BEACONNODEADDR}'"' ${CONFIG_FILE}
 yq eval --inplace '.eth1.ETH1Addr = "'${EXECUTIONCLIENTADDR}'"' ${CONFIG_FILE}
+
+yq eval --inplace '.global.LogLevel = "info"' ${CONFIG_FILE}
+yq eval --inplace '.global.LogFilePath = "'${DATA_FOLDER}/debug.log'"' ${CONFIG_FILE}
+yq eval --inplace '.global.LogFileBackups = "10"' ${CONFIG_FILE}
 
 echo "---config"
 cat ${CONFIG_FILE}
