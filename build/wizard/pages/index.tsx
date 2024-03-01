@@ -2,14 +2,11 @@ import type { NextPage } from 'next';
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import { useAccount } from 'wagmi';
 import { OperatorInfo } from '../components/OperatorInfo';
 // import { DownloadBackup } from '../components/DownloadBackup';
 // import { RestoreBackup } from '../components/RestoreBackup';
 import { useOperatorPublicKey } from '../hooks/read/useMonitor';
 import { DownloadBackup } from '../components/DownloadBackup';
-import { SsvButtons } from '../components/SsvButtons';
-import AvadoBanners from '../components/AvadoBanners';
 
 const Home: NextPage = () => {
   const [isReady, setIsReady] = useState(false);

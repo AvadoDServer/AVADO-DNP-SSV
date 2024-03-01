@@ -36,7 +36,7 @@ yq eval --inplace '.eth1.ETH1Addr = "'${EXECUTIONCLIENTADDR}'"' ${CONFIG_FILE}
 
 yq eval --inplace '.global.LogLevel = "info"' ${CONFIG_FILE}
 yq eval --inplace '.global.LogFilePath = "'${DATA_FOLDER}/debug.log'"' ${CONFIG_FILE}
-yq eval --inplace '.global.LogFileBackups = "10"' ${CONFIG_FILE}
+yq eval --inplace '.global.LogFileBackups = 10' ${CONFIG_FILE}
 
 echo "---config"
 cat ${CONFIG_FILE}

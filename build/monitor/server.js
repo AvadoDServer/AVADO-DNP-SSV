@@ -3,7 +3,8 @@ const corsMiddleware = require("restify-cors-middleware2");
 const axios = require('axios').default;
 const yaml = require('js-yaml');
 const fs = require('fs');
-const { server_config } = require('./config.js')
+const { server_config } = require('./config.js');
+const { config } = require("process");
 
 const getConfig = () => {
     try {
@@ -45,6 +46,11 @@ server.use(restify.plugins.bodyParser());
 
 server.get("/ping", (req, res, next) => {
     res.send(200, "pong");
+    next()
+});
+
+server.get("/network", (req, res, next) => {
+    res.send(200, config.network);
     next()
 });
 
