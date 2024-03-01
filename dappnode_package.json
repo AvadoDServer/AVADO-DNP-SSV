@@ -9,8 +9,10 @@
   "type": "service",
   "image": {
     "environment": [
-      "EXTRA_OPTS=",
-      "NETWORK=mainnet"
+      "NETWORK=mainnet",
+      "BEACONNODEADDR=http://teku.my.ava.do:5051",
+      "EXECUTIONCLIENTADDR=ws://ethchain-geth.my.ava.do:8546",
+      "EXTRA_OPTS="
     ],
     "volumes": [
       "ssv:/data"
