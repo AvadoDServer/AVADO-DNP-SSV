@@ -60,19 +60,49 @@ server.get("/isRegistered", (req, res, next) => {
     next()
 });
 
-// server.get("/operatorId", (req, res, next) => {
-//     const config = getConfig();
-//     const id = config?.publicKey;
-//     res.send(200, { "data": id });
-//     next()
-// });
 
-server.get("/keyfile", (req, res, next) => {
-    const config = getKeyFile();
-    // if (server_config.dev)
-    //     console.log("config:", config)
-    res.send(200, config);
-    next()
+server.get("/getBackup", (req, res, next) => {
+    const keyfile = getKeyFile();
+    const password = fs.readFileSync(server_config.password_file, 'utf8')
+    const network = server_config.network;
+
+    const backup = {
+        keyfile, password, network
+    }
+
+    const jsonString = JSON.stringify(backup);
+
+    // Set the headers to prompt a download in the browser
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', `attachment; filename="avado-ssv-${network}-backup.json"`);
+    res.setHeader('Content-Length', Buffer.byteLength(jsonString));
+
+    // Send the JSON string as a response
+    res.write(jsonString);
+    res.end();
+
+    return next();
+});
+
+server.post("/restoreBackup", (req, res, next) => {
+    if (!req.body || !req.body.config) {
+        res.send(400, "not enough parameters");
+        return next();
+    } else {
+        const { keyfile, password, network } = req.body.backup;
+        if (network === server_config.network) {
+            console.log("Restoring configuration from a backup")
+            fs.writeFileSync(server_config.private_key_file, keyfile, 'utf8');
+            fs.writeFileSync(server_config.password_file, password, 'utf8');
+
+            // Restart
+            res.send(200, `Backup is restored`);
+        } else {
+            console.log("Backup is not correct: wrong network")
+            res.send(403, `Backup is not  valid: wrong network`);
+        }
+        return next();
+    }
 });
 
 server.get("/operatorPublicKey", (req, res, next) => {
@@ -82,34 +112,6 @@ server.get("/operatorPublicKey", (req, res, next) => {
     next()
 });
 
-server.post("/restoreConfig", (req, res, next) => {
-    if (!req.body || !req.body.config) {
-        res.send(400, "not enough parameters");
-        return next();
-    } else {
-        console.log("Restoring configuration from a backup")
-        const config = req.body.config;
-        fs.writeFileSync(server_config.config_file_path, config, 'utf8');
-        res.send(200, `Backup is restored`);
-        return next();
-    }
-});
-
-// server.post("/operatorId", (req, res, next) => {
-//     if (!req.body) {
-//         res.send(400, "not enough parameters");
-//         return next();
-//     } else {
-//         const id = req.body.id;
-//         console.log("Setting operator id " + id)
-//         const config = getConfig();
-//         config.OperatorId = id;
-//         let yamlStr = yaml.dump(config);
-//         fs.writeFileSync(server_config.config_file_path, yamlStr, 'utf8');
-//         res.send(200, `Operator id set to ${id}`);
-//         return next();
-//     }
-// });
 
 server.post("/registrationTransaction", (req, res, next) => {
     if (!req.body) {

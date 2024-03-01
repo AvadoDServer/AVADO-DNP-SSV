@@ -54,7 +54,7 @@ const Home: NextPage = () => {
         {operatorPubKey && (
           <>
             <OperatorInfo operatorPubKey={operatorPubKey} network={network} />
-            {/* <DownloadBackup /> */}
+            <DownloadBackup />
           </>
         )}
       </main>
