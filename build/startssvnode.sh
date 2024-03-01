@@ -1,38 +1,48 @@
 #!/bin/sh
 
-echo "Preparing node to start"
+echo "Preparing node to start up"
 
-PUBLIC_KEY_FILE=/data/public_key.txt
-PRIVATE_KEY_FILE=/data/private_key.txt
-KEY_GEN_OUTPUT=/data/KEY_TEXT
-CONFIG_PATH=/data/config.yml
-DB_FOLDER=/data/db
+DATA_FOLDER="/data/${NETWORK}"
+mkdir -p "${DATA_FOLDER}"
 
-if [ ! -f ${CONFIG_PATH} ]; then
+PASSWORD_FILE="${DATA_FOLDER}/password.txt"
+PRIVATE_KEY_FILE="${DATA_FOLDER}/encrypted_private_key.json"
+CONFIG_FILE=${DATA_FOLDER}/config.yml
+DB_FOLDER=${DATA_FOLDER}/db
+
+if [ ! -f ${PRIVATE_KEY_FILE} ]; then
+    echo "### Creating initial configuration"
+
     mkdir -p ${DB_FOLDER}
-    touch ${CONFIG_PATH}
+    touch ${CONFIG_FILE}
 
-    /go/bin/ssvnode generate-operator-keys > ${KEY_GEN_OUTPUT}
-    
-    OPERATOR_PRIVATE_KEY=$(cat ${KEY_GEN_OUTPUT} | grep "private key" | sed -n 's/.*\({.*}\)/\1/p' | yq '.sk')
-    OPERATOR_PUBLIC_KEY=$(cat ${KEY_GEN_OUTPUT} | grep "public key" | sed -n 's/.*\({.*}\)/\1/p' | yq '.pk')
+    # Generate password
+    awk -v n=12 'BEGIN{srand(); while (n--) printf "%c", int(rand()*93+33)}' >${PASSWORD_FILE}
 
-    yq eval --inplace '.db.Path = "'${DB_FOLDER}'"' ${CONFIG_PATH}
-    yq eval --inplace '.OperatorPrivateKey = "'${OPERATOR_PRIVATE_KEY}'"' ${CONFIG_PATH}
-    yq eval --inplace '.OperatorPublicKey = "'${OPERATOR_PUBLIC_KEY}'"' ${CONFIG_PATH}
-
-    yq eval --inplace '.eth2.Network = "prater"' ${CONFIG_PATH}
-    yq eval --inplace '.eth2.BeaconNodeAddr = "http://prysm-beacon-chain-prater.my.ava.do:3500"' ${CONFIG_PATH}
-    yq eval --inplace '.eth1.ETH1Addr = "ws://goerli-geth.my.ava.do:8546"' ${CONFIG_PATH}
-
-    yq eval --inplace '.RegistryContractAddr="0xb9e155e65b5c4d66df28da8e9a0957f06f11bc04" | .RegistryContractAddr style="double"' ${CONFIG_PATH}
-
-    # yq eval --inplace '.global.LogLevel = "debug"' ${CONFIG_PATH}
+    /go/bin/ssvnode generate-operator-keys -p ${PASSWORD_FILE}
+    mv encrypted_private_key.json ${PRIVATE_KEY_FILE}
+else
+    echo "### Config file already exists"
 fi
 
+yq eval --inplace '.KeyStore.PrivateKeyFile = "'${PRIVATE_KEY_FILE}'"' ${CONFIG_FILE}
+yq eval --inplace '.KeyStore.PasswordFile = "'${PASSWORD_FILE}'"' ${CONFIG_FILE}
+yq eval --inplace '.db.Path = "'${DB_FOLDER}'"' ${CONFIG_FILE}
+yq eval --inplace '.ssv.Network = "'${NETWORK}'"' ${CONFIG_FILE}
+yq eval --inplace '.eth2.BeaconNodeAddr = "'${BEACONNODEADDR}'"' ${CONFIG_FILE}
+yq eval --inplace '.eth1.ETH1Addr = "'${EXECUTIONCLIENTADDR}'"' ${CONFIG_FILE}
+
+yq eval --inplace '.global.LogLevel = "info"' ${CONFIG_FILE}
+yq eval --inplace '.global.LogFilePath = "'${DATA_FOLDER}/debug.log'"' ${CONFIG_FILE}
+yq eval --inplace '.global.LogFileBackups = 10' ${CONFIG_FILE}
+
 echo "---config"
-cat ${CONFIG_PATH}
+cat ${CONFIG_FILE}
 echo "config---"
 
-# Start SSV-Node
-CONFIG_PATH=${CONFIG_PATH} make BUILD_PATH=/go/bin/ssvnode start-node
+while true; do
+    # Start SSV-Node
+    /go/bin/ssvnode start-node -c ${CONFIG_FILE}
+    echo "WARN: ssvnode exited! - Will retry in 60s"
+    sleep 60
+done

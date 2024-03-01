@@ -1,7 +1,7 @@
 {
   "name": "ssv.avado.dappnode.eth",
-  "version": "0.0.7",
-  "upstream": "v0.4.0",
+  "version": "0.0.10",
+  "upstream": "v1.2.3",
   "autoupdate": true,
   "title": "SSV.network operator package",
   "description": "Distributed validator support with ssv.network",
@@ -9,6 +9,9 @@
   "type": "service",
   "image": {
     "environment": [
+      "NETWORK=mainnet",
+      "BEACONNODEADDR=http://teku.my.ava.do:5051",
+      "EXECUTIONCLIENTADDR=ws://ethchain-geth.my.ava.do:8546",
       "EXTRA_OPTS="
     ],
     "volumes": [
