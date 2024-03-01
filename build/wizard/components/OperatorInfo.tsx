@@ -1,5 +1,5 @@
+import CopyToClipboard from 'react-copy-to-clipboard';
 import { useOperatorByPubKey, useOperatorById } from '../hooks/read/useSSVAPI';
-import ClickToCopy from './ClickToCopy';
 import { SsvButtons } from './SsvButtons';
 
 export const OperatorInfo = ({ operatorPubKey, network }: { operatorPubKey: string, network: string }) => {
@@ -13,6 +13,9 @@ export const OperatorInfo = ({ operatorPubKey, network }: { operatorPubKey: stri
                 <p>Please go to the <a href="https://app.ssv.network/my-account/operators-dashboard">SSV account page</a> to register your operator</p>
                 <p>Your operator pubKey is</p>
                 <textarea>{operatorPubKey}</textarea>
+                <CopyToClipboard text={operatorPubKey}>
+                    <button>Copy to clipboard</button>
+                </CopyToClipboard>
             </>)
     }
 
