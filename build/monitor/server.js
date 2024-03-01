@@ -4,7 +4,7 @@ const axios = require('axios').default;
 const yaml = require('js-yaml');
 const fs = require('fs');
 const { server_config } = require('./config.js');
-const { config } = require("process");
+const { exec } = require('child_process');
 
 const getConfig = () => {
     try {
@@ -85,20 +85,35 @@ server.get("/getBackup", (req, res, next) => {
 });
 
 server.post("/restoreBackup", (req, res, next) => {
-    if (!req.body || !req.body.config) {
+    if (!req.body || !req.body.backup) {
         res.send(400, "not enough parameters");
         return next();
     } else {
-        const { keyfile, password, network } = req.body.backup;
+        const { keyfile, password, network } = JSON.parse(req.body.backup);
         if (network === server_config.network) {
             console.log("Restoring configuration from a backup")
-            fs.writeFileSync(server_config.private_key_file, keyfile, 'utf8');
+            fs.writeFileSync(server_config.private_key_file, JSON.stringify(keyfile), 'utf8');
             fs.writeFileSync(server_config.password_file, password, 'utf8');
 
-            // Restart
+            // Restart ssvnode
+            console.log("Restarting SSVNode")
+            const command = "supervisorctl restart ssvnode";
+            exec(command, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`exec error: ${error}`);
+                    return;
+                }
+                if (stderr) {
+                    console.error(`stderr: ${stderr}`);
+                    return;
+                }
+                console.log(`stdout: ${stdout}`);
+            });
+
+
             res.send(200, `Backup is restored`);
         } else {
-            console.log("Backup is not correct: wrong network")
+            console.log("Backup is not correct: wrong network", network)
             res.send(403, `Backup is not  valid: wrong network`);
         }
         return next();

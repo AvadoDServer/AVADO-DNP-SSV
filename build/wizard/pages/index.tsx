@@ -3,10 +3,9 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import { OperatorInfo } from '../components/OperatorInfo';
-// import { DownloadBackup } from '../components/DownloadBackup';
-// import { RestoreBackup } from '../components/RestoreBackup';
 import { useNetwork, useOperatorPublicKey } from '../hooks/read/useMonitor';
 import { DownloadBackup } from '../components/DownloadBackup';
+import { RestoreBackup } from '../components/RestoreBackup';
 
 const Home: NextPage = () => {
   const [isReady, setIsReady] = useState(false);
@@ -55,6 +54,7 @@ const Home: NextPage = () => {
           <>
             <OperatorInfo operatorPubKey={operatorPubKey} network={network} />
             <DownloadBackup />
+            <RestoreBackup network={network} />
           </>
         )}
       </main>

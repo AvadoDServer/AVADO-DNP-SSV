@@ -1,6 +1,4 @@
-import axios from 'axios';
 import { server_config } from "../config"
-const yaml = require('js-yaml');
 
 export const DownloadBackup = () => {
     return (

@@ -14,8 +14,8 @@ services:
       - '12001:12001/udp'
       - '9999:9999'
     environment:
-      - BEACONNODEADDR=http://teku.my.ava.do:5051
-      - EXECUTIONCLIENTADDR=ws://ethchain-geth.my.ava.do:8546
-      - NETWORK=mainnet
+      - BEACONNODEADDR=http://lighthouse-holesky.my.ava.do:5052
+      - EXECUTIONCLIENTADDR=ws://nethermind-holesky.my.ava.do:8545
+      - NETWORK=holesky
 volumes:
   ssv: {}
