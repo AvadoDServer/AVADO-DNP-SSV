@@ -5,7 +5,7 @@ import styles from '../styles/Home.module.css';
 import { OperatorInfo } from '../components/OperatorInfo';
 // import { DownloadBackup } from '../components/DownloadBackup';
 // import { RestoreBackup } from '../components/RestoreBackup';
-import { useOperatorPublicKey } from '../hooks/read/useMonitor';
+import { useNetwork, useOperatorPublicKey } from '../hooks/read/useMonitor';
 import { DownloadBackup } from '../components/DownloadBackup';
 
 const Home: NextPage = () => {
@@ -16,8 +16,10 @@ const Home: NextPage = () => {
   // const { isConnected, address, status } = useAccount()
 
   const { data: operatorPubKey, error: error } = useOperatorPublicKey();
+  const { data: network, error: network_error } = useNetwork();
 
-  // console.log("operatorPubKey", operatorPubKey)
+  console.log("operatorPubKey", operatorPubKey)
+  console.log("network", network)
 
   if (!isReady) return null;
 
@@ -51,38 +53,10 @@ const Home: NextPage = () => {
 
         {operatorPubKey && (
           <>
-            <OperatorInfo operatorPubKey={`${operatorPubKey}`} />
+            <OperatorInfo operatorPubKey={operatorPubKey} network={network} />
             {/* <DownloadBackup /> */}
           </>
         )}
-
-
-        {/* {(!operatorPubKey) && (
-          <>
-            <h1 className="title is-1">Welcome to Avado SSV</h1>
-            {!isConnected && (
-              <>
-                <div>Click the <b>Connect Wallet</b> button below to connect to the wallet you want to use to register as SSV operator.</div>
-              </>
-            )}
-
-            <ConnectButton />
-
-            {!isConnected && (
-              <>
-                <RestoreBackup />
-              </>
-            )}
-
-            {isConnected && (
-              <>
-                <div>The next step is registring your node on the SSV smart contract.</div>
-                <div>Choose an operator name, click <b>Register</b> and confirm the transaction in your wallet.</div>
-                <RegisterOperator address={address} />
-              </>
-            )}
-          </>
-        )} */}
       </main>
 
       <footer className={styles.footer}>

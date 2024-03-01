@@ -50,7 +50,7 @@ server.get("/ping", (req, res, next) => {
 });
 
 server.get("/network", (req, res, next) => {
-    res.send(200, config.network);
+    res.send(200, { "data": server_config.network });
     next()
 });
 

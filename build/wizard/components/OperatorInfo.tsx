@@ -2,18 +2,17 @@ import { useOperatorByPubKey, useOperatorById } from '../hooks/read/useSSVAPI';
 import ClickToCopy from './ClickToCopy';
 import { SsvButtons } from './SsvButtons';
 
-export const OperatorInfo = ({ operatorPubKey }: { operatorPubKey: string }) => {
-    const { data: operatorData } = useOperatorByPubKey(operatorPubKey);
-    const { data: operatorDetails } = useOperatorById(operatorData?.data?.id);
+export const OperatorInfo = ({ operatorPubKey, network }: { operatorPubKey: string, network: string }) => {
+    const { data: operatorData } = useOperatorByPubKey(operatorPubKey, network);
+    const { data: operatorDetails } = useOperatorById(operatorData?.data?.id, network);
 
-    if (!operatorData || !operatorDetails) return null;
-
-    if (operatorData.data === null) {
+    if (!operatorData || !operatorDetails) {
         return (
             <>
                 <p>Register your operator</p>
-                <p>Please go to the <a href="https://app.ssv.network/my-account/">SSV account page</a> to register your operator</p>
+                <p>Please go to the <a href="https://app.ssv.network/my-account/operators-dashboard">SSV account page</a> to register your operator</p>
                 <p>Your operator pubKey is</p>
+                <textarea>{operatorPubKey}</textarea>
             </>)
     }
 
