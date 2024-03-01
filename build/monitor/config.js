@@ -10,6 +10,7 @@ exports.server_config = {
     config_file_path: `/data/${network}/config.yaml`,
     private_key_file: `/data/${network}/encrypted_private_key.json`,
     password_file: `/data/${network}/password.txt`,
+    db_path: `/data/${network}/db`,
     network,
     dev
 }

@@ -110,6 +110,12 @@ server.post("/restoreBackup", (req, res, next) => {
                 console.log(`stdout: ${stdout}`);
             });
 
+            fs.rm(server_config.db_path, { recursive: true, force: true }, err => {
+                if (err) {
+                    console.error(`Error deleting ${dir}: `, err);
+                }
+                console.log(`${dir} is deleted!`);
+            });
 
             res.send(200, `Backup is restored`);
         } else {
