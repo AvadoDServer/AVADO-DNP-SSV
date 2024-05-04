@@ -6,6 +6,7 @@ import { OperatorInfo } from '../components/OperatorInfo';
 import { useNetwork, useOperatorPublicKey } from '../hooks/read/useMonitor';
 import { DownloadBackup } from '../components/DownloadBackup';
 import { RestoreBackup } from '../components/RestoreBackup';
+import Header from "../components/Header";
 
 const Home: NextPage = () => {
   const [isReady, setIsReady] = useState(false);
@@ -32,41 +33,44 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Avado SSV</title>
-        <meta
-          name="Avado SSV package"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <>
+      <Header />
+      <div className={styles.container}>
+        <Head>
+          <title>Avado SSV</title>
+          <meta
+            name="Avado SSV package"
+          />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <main className={styles.main}>
+        <main className={styles.main}>
 
-        {error && (
-          <>
-            <div>Could not connect to your Avado</div>
-            <div>({error.message})</div>
-          </>
-        )}
+          {error && (
+            <>
+              <div>Could not connect to your Avado</div>
+              <div>({error.message})</div>
+            </>
+          )}
 
-        {operatorPubKey && (
-          <>
-            <OperatorInfo operatorPubKey={operatorPubKey} network={network} />
-            <DownloadBackup />
-            <RestoreBackup network={network} />
-          </>
-        )}
-      </main>
+          {operatorPubKey && (
+            <>
+              <OperatorInfo operatorPubKey={operatorPubKey} network={network} />
+              <DownloadBackup />
+              <RestoreBackup network={network} />
+            </>
+          )}
+        </main>
 
-      <footer className={styles.footer}>
-        <a href="http://my.ava.do/#/Packages/ssv.avado.dappnode.eth/detail">Logs</a>
-        <br />
-        <a href="https://ava.do" target="_blank" rel="noopener noreferrer">
-          Made with ❤️ by your frens at Avado
-        </a>
-      </footer>
-    </div>
+        <footer className={styles.footer}>
+          <a href="http://my.ava.do/#/Packages/ssv.avado.dappnode.eth/detail">Logs</a>
+          <br />
+          <a href="https://ava.do" target="_blank" rel="noopener noreferrer">
+            Made with ❤️ by your frens at Avado
+          </a>
+        </footer>
+      </div>
+    </>
   );
 };
 
