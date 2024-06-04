@@ -19,11 +19,8 @@ RUN yarn --production
 
 FROM --platform=linux/amd64 bloxstaking/ssv-node:${UPSTREAM_VERSION}
 
-# RUN apk add --no-cache yq --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
-# RUN apk add --no-cache supervisor nginx nodejs curl
-
 RUN apt-get update && apt-get install -y supervisor nginx nodejs curl
-RUN apt-get install -y yq
+RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq
 RUN useradd -r -s /bin/false nginx
 
 # copy wizard & monitor

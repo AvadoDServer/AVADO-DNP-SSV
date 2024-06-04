@@ -25,26 +25,22 @@ else
     echo "### Operator key already exists"
 fi
 
-yq eval -i -Y '.KeyStore.PrivateKeyFile = "'${PRIVATE_KEY_FILE}'"' ${CONFIG_FILE}
-yq eval -i -Y '.KeyStore.PasswordFile = "'${PASSWORD_FILE}'"' ${CONFIG_FILE}
-yq eval -i -Y '.db.Path = "'${DB_FOLDER}'"' ${CONFIG_FILE}
-yq eval -i -Y '.ssv.Network = "'${NETWORK}'"' ${CONFIG_FILE}
-yq eval -i -Y '.eth2.BeaconNodeAddr = "'${BEACONNODEADDR}'"' ${CONFIG_FILE}
-yq eval -i -Y '.eth1.ETH1Addr = "'${EXECUTIONCLIENTADDR}'"' ${CONFIG_FILE}
+yq eval --inplace '.KeyStore.PrivateKeyFile="'${PRIVATE_KEY_FILE}'"' ${CONFIG_FILE}
+yq eval --inplace '.KeyStore.PasswordFile="'${PASSWORD_FILE}'"' ${CONFIG_FILE}
+yq eval --inplace '.db.Path="'${DB_FOLDER}'"' ${CONFIG_FILE}
+yq eval --inplace '.ssv.Network="'${NETWORK}'"' ${CONFIG_FILE}
+yq eval --inplace '.eth2.BeaconNodeAddr="'${BEACONNODEADDR}'"' ${CONFIG_FILE}
+yq eval --inplace '.eth1.ETH1Addr="'${EXECUTIONCLIENTADDR}'"' ${CONFIG_FILE}
 
-yq eval -i -Y '.global.LogLevel = "info"' ${CONFIG_FILE}
-yq eval -i -Y '.global.LogFilePath = "'${DATA_FOLDER}/debug.log'"' ${CONFIG_FILE}
-yq eval -i -Y '.global.LogFileBackups = 10' ${CONFIG_FILE}
+yq eval --inplace '.global.LogLevel="info"' ${CONFIG_FILE}
+yq eval --inplace '.global.LogFilePath="'${DATA_FOLDER}/debug.log'"' ${CONFIG_FILE}
+yq eval --inplace '.global.LogFileBackups=10' ${CONFIG_FILE}
 
-yq eval -i -Y '.MetricsAPIPort = 15000' ${CONFIG_FILE}
+yq eval --inplace '.MetricsAPIPort=15000' ${CONFIG_FILE}
 
 echo "---config"
 cat ${CONFIG_FILE}
 echo "config---"
 
-while true; do
-    # Start SSV-Node
-    /go/bin/ssvnode start-node -c ${CONFIG_FILE}
-    echo "WARN: ssvnode exited! - Will retry in 60s"
-    sleep 60
-done
+# Start SSV-Node
+/go/bin/ssvnode start-node -c ${CONFIG_FILE}
