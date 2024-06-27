@@ -4,8 +4,8 @@ services:
     build:
       context: build
       args:
-        UPSTREAM_VERSION: v1.3.3
-    image: 'ssv.avado.dappnode.eth:0.0.11'
+        UPSTREAM_VERSION: v1.3.6
+    image: 'ssv.avado.dappnode.eth:0.0.12'
     restart: always
     volumes:
       - 'ssv:/data'
