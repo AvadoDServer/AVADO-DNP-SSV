@@ -4,14 +4,14 @@ import { server_config } from "../config";
 import React, { useEffect, useState, useCallback } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload, faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
-const yaml = require('js-yaml');
 
 // // import { StyledDropZone } from 'react-drop-zone';
 // const react_drop_zone = require('react-drop-zone');
 
 import Dropzone from 'react-dropzone'
+import { debug } from 'console';
 
-export const RestoreBackup = () => {
+export const RestoreBackup = ({ network }: { network: string }) => {
 
     const [collapsed, setCollapsed] = React.useState(true);
     const [backupFile, setBackupFile] = React.useState<File | null>();
@@ -42,19 +42,23 @@ export const RestoreBackup = () => {
             console.log("Validating backup file:", backupFile?.name)
 
             try {
-                const content = yaml.load(backupContent, 'utf8');
+                const content = JSON.parse(backupContent);
 
                 // Backup file should at least have these fields
                 if (
-                    content?.db?.Path
-                    && content?.OperatorPrivateKey
-                    && content?.OperatorPublicKey
-                    && content?.RegistryContractAddr
+                    content?.password
+                    && content?.network
+                    && content?.keyfile
                 ) {
-                    setResult({ status: "valid", message: "Valid config file, ready for restoring" })
-                    setBackupFileContent(backupContent)
+                    if (content.network !== network) {
+                        setError(`backup has wrong network (was:${content.network}, expect:${network})`)
+                    } else {
+                        setResult({ status: "valid", message: "Valid config file, ready for restoring" })
+                        setBackupFileContent(backupContent)
+                    }
+
                 } else {
-                    setError("missing items in yaml file")
+                    setError("missing items in backup file")
                 }
 
             } catch (e) {
@@ -74,11 +78,16 @@ export const RestoreBackup = () => {
         setBackupFileContent(undefined)
         setResult({ status: "restoring", message: "Restoring backup" })
 
-        axios.post(`${server_config.monitor_url}/restoreConfig`, { config: backupFileContent })
-            .catch(e => { console.error(e) })
+        axios.post(`${server_config.monitor_url}/restoreBackup`, { backup: backupFileContent })
             .then((res) => {
-                setResult({ status: "restored", message: "Successfully restored SSV operator config" })
-                window.location.reload()
+                if (res)
+                    setResult({ status: "restored", message: "Successfully restored SSV operator config." })
+                else
+                    setResult({ status: "error", message: "Failed restoring SSV operator config." })
+            })
+            .catch(e => {
+                console.error(e)
+                setResult({ status: "error", message: JSON.stringify(e.response.data) })
             });
     }
 
@@ -94,7 +103,6 @@ export const RestoreBackup = () => {
     // TODO: why are angledown and up icons not visible?
     return (
         <>
-            <>Or</>
             <div>
                 <section className="section">
                     <div className="container">

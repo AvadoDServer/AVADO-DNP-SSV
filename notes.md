@@ -17,3 +17,9 @@ https://api.ssv.network/documentation/
 How to choose the Fee?
 
 https://docs.ssv.network/learn/operators#operator-fee
+
+
+Contracts:
+https://docs.ssv.network/developers/smart-contracts
+ABI:
+https://github.com/bloxapp/ssv-network/blob/contract-abi/docs/testnet/abi/v0.3.0/SSVNetworkViews.json
