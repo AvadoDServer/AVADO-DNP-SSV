@@ -22,6 +22,7 @@ export const OperatorInfo = ({ operatorPubKey, network }: { operatorPubKey: stri
     return (<>
         <h2>Operator</h2>
         <textarea>{operatorPubKey}</textarea>
+        <p>Network: {network}</p>
         <p>Operator ID:{JSON.stringify(operatorData.data.id, null, 2)}</p>
         <p>Name: {operatorDetails.setup_provider}</p>
         <p>Status: {operatorDetails.status}</p>

@@ -6,8 +6,8 @@ const web3 = new Web3();
 export const SsvButtons = ({ operatorId }: { operatorId: bigint }) => {
     return (
         <div>
-            <a href={`https://app.ssv.network/`} className="button">Manage operator on SSV app</a>
-            <a href={`https://explorer.ssv.network/operators/${operatorId}`} className="button" >SSV Explorer</a>
+            <a href={`https://app.ssv.network/`} className="">Manage operator on SSV dapp</a><br/>
+            <a href={`https://explorer.ssv.network/operators/${operatorId}`} className="" >View operator on SSV Explorer</a>
         </div>
     );
 };
