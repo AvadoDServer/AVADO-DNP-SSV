@@ -37,6 +37,8 @@ yq eval --inplace '.global.LogFilePath = "'${DATA_FOLDER}/debug.log'"' ${CONFIG_
 yq eval --inplace '.global.LogFileBackups = 10' ${CONFIG_FILE}
 yq eval --inplace '.MetricsAPIPort = 15000' ${CONFIG_FILE}
 
+yq eval --inplace '.ssv.ValidatorOptions.BuilderProposals = true' ${CONFIG_FILE}
+
 echo "---config"
 cat ${CONFIG_FILE}
 echo "config---"

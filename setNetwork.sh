@@ -23,5 +23,6 @@ for file in \
   ln ${BASENAME}-${NETWORK}.${EXT} $file
 done
 
+rm -f build/wizard/config.js
 ln build/wizard/config-${NETWORK}.js build/wizard/config.js
 
