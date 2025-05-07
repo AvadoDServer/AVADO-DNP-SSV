@@ -13,7 +13,7 @@ import { debug } from 'console';
 
 export const RestoreBackup = ({ network }: { network: string }) => {
 
-    const [collapsed, setCollapsed] = React.useState(false);
+    const [collapsed, setCollapsed] = React.useState(true);
     const [backupFile, setBackupFile] = React.useState<File | null>();
     const [backupFileContent, setBackupFileContent] = React.useState<string>();
 
@@ -71,7 +71,7 @@ export const RestoreBackup = ({ network }: { network: string }) => {
             setResult({ status: "validating", message: "Verifying backup file" })
             verifyAndSet(backupFile)
         }
-    }, [backupFile, network]);
+    }, [backupFile]);
 
     const restoreBackup = () => {
         const element = document.createElement("a");
@@ -104,41 +104,52 @@ export const RestoreBackup = ({ network }: { network: string }) => {
     return (
         <>
             <div>
-                <p className="text-sm pb-4">(backup file is called <b>aqua-patina-ssv-{network}-backup.json</b>)</p>
-                <div className="content">
-                    <div className="field is-horizontal">
-                        <label className="field-label has-text-black">Config backup file (required):</label>
-                        <div className="field-body">
-                            <div className="file has-name">
-                                <label className="file-label"><input className="file-input" type="file" name="keystore" id="keystore" onChange={e => setBackupFile(e.target?.files?.item(0))} />
-                                    <span className="file-cta">
-                                        <span className="file-icon">
-                                            <FontAwesomeIcon icon={faUpload} />
-                                        </span>
-                                        <span className="file-label">
-                                            Choose config file…
-                                        </span>
-                                    </span>
-                                    <span className="file-name">
-                                        {backupFile ? backupFile.name : "No file uploaded"}
-                                    </span>
-                                </label>
+                <section className="section">
+                    <div className="container">
+                        <div className="card">
+                            <header className="card-header" onClick={() => setCollapsed(!collapsed)}>
+                                <p className="card-header-title">Restore an SSV operator from a backup config file</p>
+                                <div className="card-header-icon card-toggle">
+                                    <FontAwesomeIcon icon={collapsed ? faAngleDown : faAngleUp} />
+                                </div>
+                            </header>
+                            <div className={"card-content" + (collapsed ? " is-hidden" : "")}>
+                                <div className="content">
+                                    <div className="field is-horizontal">
+                                        <label className="field-label has-text-black">Config backup file (required):</label>
+                                        <div className="field-body">
+                                            <div className="file has-name">
+                                                <label className="file-label"><input className="file-input" type="file" name="keystore" id="keystore" onChange={e => setBackupFile(e.target?.files?.item(0))} />
+                                                    <span className="file-cta">
+                                                        <span className="file-icon">
+                                                            <FontAwesomeIcon icon={faUpload} />
+                                                        </span>
+                                                        <span className="file-label">
+                                                            Choose config file…
+                                                        </span>
+                                                    </span>
+                                                    <span className="file-name">
+                                                        {backupFile ? backupFile.name : "No file uploaded"}
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="field is-grouped">
+                                        <label className="field-label has-text-black">{/* Left empty for spacing*/}</label>
+                                        <div className="field-body">
+                                            <div className="control">
+                                                <button className="button is-link" onClick={restoreBackup} disabled={!backupFileContent}>Restore config file from backup</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {result.message && (<p className={"tag " + getResultTag()}>{result.message}</p>)}
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className="field is-grouped">
-                        <label className="field-label has-text-black">{/* Left empty for spacing*/}</label>
-                        <div className="field-body">
-                            <div className="control">
-                                <button className="button is-link" onClick={restoreBackup} disabled={!backupFileContent}>Restore config file from backup</button>
-                            </div>
-                        </div>
-                    </div>
-                    {result.message && (<p className={"tag " + getResultTag()}>{result.message}</p>)}
-                </div>
+                </section>
             </div>
-
-
         </>
 
     );
